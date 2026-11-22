@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('node:assert/strict');
-const { eventSlug, eventPath, eventPageHtml, eventDirectoryHtml, safeHttpsUrl } = require('../generate-sitemap');
+const { eventSlug, eventPath, eventPageHtml, eventDirectoryHtml, safeHttpsUrl, isSeoEligibleEvent } = require('../generate-sitemap');
 
 const event = {
   id: '15249dc1-49fe-42cf-9c18-fbe02d19b511',
@@ -16,12 +16,17 @@ const event = {
   organizer: 'Student Council',
   category: 'Technology',
   poster_url: 'https://hapn.info/assets/images/og-image.png',
-  registration_link: 'https://example.com/register'
+  registration_link: 'https://example.com/register',
+  updated_at: '2026-11-20T12:30:00Z'
 };
 
 assert.equal(eventSlug(event), 'jaipur-tech-innovation-fest-2026-15249dc1-49fe-42cf-9c18-fbe02d19b511');
 assert.equal(eventPath(event), '/event/jaipur-tech-innovation-fest-2026-15249dc1-49fe-42cf-9c18-fbe02d19b511/');
 assert.equal(safeHttpsUrl('javascript:alert(1)'), null);
+assert.equal(isSeoEligibleEvent(event), true);
+assert.equal(isSeoEligibleEvent({ ...event, date: '' }), false);
+assert.equal(isSeoEligibleEvent({ ...event, title: '' }), false);
+assert.equal(isSeoEligibleEvent({ ...event, id: '' }), false);
 
 const html = eventPageHtml(event);
 assert.match(html, /<title>Jaipur Tech &amp; Innovation Fest 2026 – College Event \| Hapn<\/title>/);
@@ -43,4 +48,4 @@ assert.ok(directory.includes('https://hapn.info/event/jaipur-tech-innovation-fes
 assert.ok(directory.includes('<meta name="robots" content="index, follow'));
 assert.ok(directory.includes('1 published event listings'));
 
-console.log('[event-seo] clean URLs, event pages, directory links, metadata, schema and safe links passed');
+console.log('[event-seo] clean URLs, eligibility, freshness, Event schema, metadata, directory links and safe links passed');
