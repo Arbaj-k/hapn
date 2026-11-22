@@ -12,7 +12,7 @@ const llms = fs.readFileSync('llms.txt', 'utf8');
 assert.match(page, /<title>Editorial &amp; Event Listing Standards \| Hapn<\/title>/);
 assert.match(page, /<link rel="canonical" href="https:\/\/hapn\.info\/editorial-policy\/">/);
 assert.match(page, /<h1>Editorial &amp; Event Listing Standards<\/h1>/);
-assert.match(page, /not independent confirmation of every claim/);
+assert.match(page, /not be interpreted as independent confirmation of every claim/);
 assert.match(page, /mailto:collegeevent28@gmail\.com/);
 assert.match(sitemapGenerator, /baseUrl \+ '\/editorial-policy\/'/);
 assert.match(about, /href="\/editorial-policy\/">Editorial Standards/);
