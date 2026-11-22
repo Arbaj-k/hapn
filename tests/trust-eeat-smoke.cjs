@@ -18,7 +18,9 @@ assert.match(page, /not independent verification of every claim/);
 assert.match(page, /does not establish a partnership, endorsement or affiliation/);
 assert.match(page, /collegeevent28@gmail\.com/);
 assert.match(sitemap, /baseUrl \+ '\/trust\/'/);
-for (const [name, source] of Object.entries({home,about,editorial,help,terms})) {
+for (const [name, source] of Object.entries({about,editorial,help,terms})) {
   assert.match(source, /href="\/trust\/">Trust &amp; Transparency/ , name + ' should link to trust hub');
 }
+// Keep the homepage footer minimal; the trust hub remains linked from the detailed information pages.
+assert.doesNotMatch(home, /href="\/trust\/">Trust &amp; Transparency/, 'homepage footer should remain concise');
 console.log('[trust-eeat] canonical, schema, transparency claims, corrections contact, sitemap and internal links passed');
