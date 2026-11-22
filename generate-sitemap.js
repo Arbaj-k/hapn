@@ -9,6 +9,10 @@ const staticUrls = [
   { loc: baseUrl + '/' },
   { loc: baseUrl + '/events/' },
   { loc: baseUrl + '/answers/' },
+  { loc: baseUrl + '/knowledge/events/' },
+  { loc: baseUrl + '/knowledge/fests/' },
+  { loc: baseUrl + '/knowledge/connect/' },
+  { loc: baseUrl + '/knowledge/anonymous-chat/' },
   { loc: baseUrl + '/university-events/' },
   { loc: baseUrl + '/international-university-events/' },
   { loc: baseUrl + '/campus-partners/' },
@@ -95,18 +99,30 @@ function eventPageHtml(event) {
   const dateText = date + (event.end_date ? ' – ' + endDate : '');
   const timeText = time + (event.end_time ? ' – ' + endTime : '');
 
+  const startDate = event.date && event.time ? event.date + 'T' + event.time : event.date;
+  const resolvedEndDate = event.end_date && event.end_time
+    ? event.end_date + 'T' + event.end_time
+    : (event.end_date || event.date);
+  const endDay = String(event.end_date || event.date || '').slice(0, 10);
+  const isCompleted = /^\\d{4}-\\d{2}-\\d{2}$/.test(endDay) &&
+    endDay < new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  const updatedAt = event.updated_at && !Number.isNaN(Date.parse(event.updated_at))
+    ? new Date(event.updated_at).toISOString()
+    : '';
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Event',
     name: event.title || 'College Event',
     description: event.description || event.short_description || 'College event details and registration.',
-    startDate: event.date && event.time ? event.date + 'T' + event.time : event.date,
-    endDate: event.end_date && event.end_time ? event.end_date + 'T' + event.end_time : (event.end_date || event.date),
-    eventStatus: 'https://schema.org/EventScheduled',
+    startDate,
+    endDate: resolvedEndDate,
+    eventStatus: isCompleted ? 'https://schema.org/EventCompleted' : 'https://schema.org/EventScheduled',
     url: canonical,
-    image: [event.poster_url || baseUrl + '/assets/images/og-image.png'],
+    image: [posterUrl || baseUrl + '/assets/images/og-image.png'],
+    inLanguage: 'en',
     location: event.venue ? { '@type': 'Place', name: event.venue } : undefined
   };
+  if (updatedAt) schema.dateModified = updatedAt;
 
   // VGU Campus has a verified public address; add it only when the event venue is VGU Campus.
   if (String(event.venue || '').trim().toLowerCase() === 'vgu campus') {
@@ -170,6 +186,7 @@ ${timeText ? '<div><dt>⏰ Time</dt><dd>' + timeText + '</dd></div>' : ''}
 ${venue ? '<div><dt>📍 Venue</dt><dd>' + venue + '</dd></div>' : ''}
 ${organizer ? '<div><dt>👥 Organizer</dt><dd>' + organizer + '</dd></div>' : ''}
 </dl>
+${updatedAt ? '<p class="event-updated"><small>Listing last updated: <time datetime="' + escapeHtml(updatedAt) + '">' + escapeHtml(new Date(updatedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' })) + '</time></small></p>' : ''}
 <h2 class="detail-text-title">About this event</h2>
 <p class="detail-text">${description}</p>
 ${'<div class="detail-cta">' + (registration ? '<a class="btn btn-primary btn-lg" href="' + registration + '" target="_blank" rel="noopener noreferrer">Register Now</a>' : '') + '<button class="btn btn-outline share-button" type="button" data-share-url="' + canonical + '" data-share-title="' + title + ' – Hapn" data-share-image="' + image + '" data-share-text="Check out ' + title + ' on Hapn!" aria-label="Share this event"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4M8.7 13.3l6.6 4.4"/></svg> Share event</button></div>'}
@@ -330,18 +347,20 @@ async function main() {
     process.exit(1);
   }
 
-  await generateEventPages(events);
-  generateEventDirectory(events);
+  const eligibleEvents = events.filter(isSeoEligibleEvent);
+  await generateEventPages(eligibleEvents);
+  generateEventDirectory(eligibleEvents);
 
-  const eventUrls = events.map((event) => ({
+  const skippedEvents = events.length - eligibleEvents.length;
+  const eventUrls = eligibleEvents.map((event) => ({
     loc: baseUrl + eventPath(event),
-    lastmod: event.updated_at ? new Date(event.updated_at).toISOString() : undefined
+    lastmod: event.updated_at && !Number.isNaN(Date.parse(event.updated_at)) ? new Date(event.updated_at).toISOString() : undefined
   }));
 
   const urls = staticUrls.concat(eventUrls);
 
-  if (events.length === 0) {
-    throw new Error('No published events were returned; refusing to publish a sitemap without event URLs.');
+  if (eligibleEvents.length === 0) {
+    throw new Error('No SEO-eligible published events were returned; refusing to publish a sitemap without event URLs.');
   }
 
   const body = urls.map((item) => [
@@ -362,8 +381,14 @@ ${body}
 
   console.log('[sitemap] Generated ' + urls.length + ' URLs (' + events.length + ' published events).');
   console.log('[sitemap] Event URLs: ' + eventUrls.length);
+  console.log('[sitemap] Events excluded from indexable sitemap for missing/invalid title, ID or date: ' + skippedEvents);
 }
 
 if (require.main === module) main();
 
-module.exports = { safeHttpsUrl, eventPageHtml, eventDirectoryHtml, eventSlug, eventPath };
+function isSeoEligibleEvent(event) {
+  return Boolean(event && String(event.id || '').trim() && String(event.title || '').trim() &&
+    /^\\d{4}-\\d{2}-\\d{2}$/.test(String(event.date || '').slice(0, 10)) &&
+    !Number.isNaN(Date.parse(String(event.date || '') + 'T00:00:00Z')));
+}
+module.exports = { safeHttpsUrl, eventPageHtml, eventDirectoryHtml, eventSlug, eventPath, isSeoEligibleEvent };
