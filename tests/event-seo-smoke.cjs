@@ -28,7 +28,7 @@ assert.match(html, /<title>Jaipur Tech &amp; Innovation Fest 2026 – College Ev
 assert.match(html, /<h1>Jaipur Tech &amp; Innovation Fest 2026<\/h1>/);
 assert.match(html, /<link rel="canonical" href="https:\/\/hapn\.info\/event\/jaipur-tech-innovation-fest-2026-15249dc1-49fe-42cf-9c18-fbe02d19b511\/">/);
 assert.match(html, /<meta name="description" content="A student technology festival/);
-assert.doesNotMatch(html, /\\\\n<meta name="robots"/);
+assert.equal(html.includes('\\n<meta name="robots"'), false);
 assert.match(html, /"@type":"Event"/);
 assert.match(html, /"addressLocality":"Jaipur"/);
 assert.match(html, /Register Now/);
