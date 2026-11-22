@@ -2514,3 +2514,11 @@ body[data-page="home"] .home-calendar {
 }
 /* No pagination dots are rendered; keep the rail free of their old reserved space. */
 #next-up .featured-carousel { padding-bottom:8px; }
+
+/* Compact four-link mobile navigation; desktop navigation stays unchanged. */
+.mobile-primary-link { display:none !important; }
+@media (max-width: 767px) {
+  .site-header .nav a:not(.mobile-primary-link) { display:none !important; }
+  .site-header .nav a.mobile-primary-link { display:flex !important; align-items:center; min-height:46px; padding:12px 14px; }
+  .site-header .nav { gap:2px; padding:8px 12px 12px; }
+}
