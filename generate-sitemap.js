@@ -8,6 +8,7 @@ const anonKey = (process.env.SUPABASE_ANON_KEY || '').trim();
 const staticUrls = [
   { loc: baseUrl + '/' },
   { loc: baseUrl + '/events/' },
+  { loc: baseUrl + '/events/directory/' },
   { loc: baseUrl + '/about/' },
   { loc: baseUrl + '/editorial-policy/' },
   { loc: baseUrl + '/fests/' },
@@ -218,6 +219,88 @@ document.addEventListener('click', async function (event) {
 </html>`;
 }
 
+function eventDirectoryHtml(events) {
+  const published = [...events].sort((a, b) => {
+    const dateOrder = String(a.date || '9999-99-99').localeCompare(String(b.date || '9999-99-99'));
+    return dateOrder || String(a.title || '').localeCompare(String(b.title || ''));
+  });
+  const categories = [...new Set(published.map((event) => String(event.category || '').trim()).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b));
+  const groups = categories.map((category) => ({
+    name: category,
+    events: published.filter((event) => String(event.category || '').trim() === category)
+  }));
+  const uncategorized = published.filter((event) => !String(event.category || '').trim());
+  if (uncategorized.length) groups.push({ name: 'Other events', events: uncategorized });
+
+  const eventRows = (items) => items.map((event) => {
+    const title = escapeHtml(event.title || 'College Event');
+    const url = baseUrl + eventPath(event);
+    const date = escapeHtml(event.date || 'Date to be announced');
+    const venue = escapeHtml(event.venue || 'Venue to be announced');
+    const summary = escapeHtml(String(event.short_description || event.description || '').replace(/\\s+/g, ' ').trim().slice(0, 180));
+    return '<li class="directory-event"><a href="' + escapeHtml(url) + '">' + title + '</a><p>' + date + ' · ' + venue + '</p>' + (summary ? '<p>' + summary + '</p>' : '') + '</li>';
+  }).join('\\n');
+
+  const sections = groups.map((group, index) =>
+    '<section class="directory-category" aria-labelledby="directory-category-' + index + '"><h2 id="directory-category-' + index + '">' + escapeHtml(group.name) + '</h2><ul>' + eventRows(group.events) + '</ul></section>'
+  ).join('\\n');
+  const description = 'Browse ' + published.length + ' published college event listings on Hapn, grouped by category with direct links to event details.';
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>College Events Directory – Published Campus Events | Hapn</title>
+<meta name="description" content="${escapeHtml(description.slice(0, 157))}">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="${baseUrl}/events/directory/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Hapn">
+<meta property="og:title" content="College Events Directory | Hapn">
+<meta property="og:description" content="${escapeHtml(description)}">
+<meta property="og:url" content="${baseUrl}/events/directory/">
+<meta property="og:image" content="${baseUrl}/assets/images/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="College Events Directory | Hapn">
+<meta name="twitter:description" content="${escapeHtml(description)}">
+<meta name="twitter:image" content="${baseUrl}/assets/images/og-image.png">
+<link rel="icon" href="${baseUrl}/assets/images/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="${baseUrl}/css/style.css">
+<style>
+.directory-intro{max-width:760px;margin:0 auto 28px}
+.directory-category{margin:30px 0}
+.directory-category ul{list-style:none;padding:0;display:grid;gap:12px}
+.directory-event{padding:16px;border:1px solid var(--border,#e5e7eb);border-radius:14px;background:var(--surface,#fff)}
+.directory-event>a{font-weight:700;text-decoration:none}
+.directory-event p{margin:6px 0 0;color:var(--muted,#64748b);line-height:1.5}
+.directory-back{display:inline-flex;margin:0 0 18px}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container header-inner">
+<a class="brand" href="${baseUrl}/"><img src="${baseUrl}/assets/images/logo.svg" alt="" width="34" height="34"><span>Hapn</span></a>
+<nav class="nav" aria-label="Main"><a href="${baseUrl}/">Home</a><a href="${baseUrl}/events/" aria-current="page">Events</a><a href="${baseUrl}/about/">About</a></nav>
+</div></header>
+<main id="main">
+<section class="page-head"><div class="container"><p class="eyebrow">Explore campus life</p><h1>College Events Directory</h1><p>Browse published college events on Hapn. Choose a category and open an event for its date, venue, organiser and registration information.</p></div></section>
+<section class="section"><div class="container">
+<a class="directory-back" href="${baseUrl}/events/">← Back to event search</a>
+<div class="directory-intro"><p><strong>${published.length} published event listings</strong>. Event details are supplied by organisers and may change; confirm important arrangements directly with the organiser.</p></div>
+${published.length ? sections : '<p>No public event listings are currently available. Please check the <a href="' + baseUrl + '/events/">events page</a> again soon.</p>'}
+</div></section>
+</main>
+<footer class="site-footer"><div class="container"><p class="footer-bottom">© 2026 Hapn · <a href="${baseUrl}/editorial-policy/">Editorial Standards</a></p></div></footer>
+</body>
+</html>`;
+}
+
+function generateEventDirectory(events) {
+  const directory = path.join('events', 'directory');
+  fs.mkdirSync(directory, { recursive: true });
+  fs.writeFileSync(path.join(directory, 'index.html'), eventDirectoryHtml(events));
+}
+
 async function generateEventPages(events) {
   for (const event of events) {
     const directory = path.join('event', eventSlug(event));
@@ -242,6 +325,7 @@ async function main() {
   }
 
   await generateEventPages(events);
+  generateEventDirectory(events);
 
   const eventUrls = events.map((event) => ({
     loc: baseUrl + eventPath(event),
@@ -276,4 +360,4 @@ ${body}
 
 if (require.main === module) main();
 
-module.exports = { safeHttpsUrl, eventPageHtml, eventSlug, eventPath };
+module.exports = { safeHttpsUrl, eventPageHtml, eventDirectoryHtml, eventSlug, eventPath };
