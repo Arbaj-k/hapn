@@ -29,6 +29,9 @@ jobs:
       - name: Run production hardening regression tests
         run: node tests/production-hardening-smoke.cjs
 
+      - name: Verify university events landing page
+        run: node tests/university-events-smoke.cjs
+
       - name: Verify editorial policy and trust content
         run: node tests/editorial-policy-smoke.cjs
 
