@@ -15,6 +15,7 @@ const staticUrls = [
   { loc: baseUrl + '/jaipur-college-events/' },
   { loc: baseUrl + '/events/directory/' },
   { loc: baseUrl + '/about/' },
+  { loc: baseUrl + '/campus-life/' },
   { loc: baseUrl + '/editorial-policy/' },
   { loc: baseUrl + '/fests/' },
   { loc: baseUrl + '/hapn-connect/' },
