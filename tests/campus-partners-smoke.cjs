@@ -10,7 +10,7 @@ assert.match(page, /<title>Campus Partners &amp; Student Organisers \| Hapn<\/ti
 assert.match(page, /<link rel="canonical" href="https:\/\/hapn\.info\/campus-partners\/">/);
 assert.match(page, /"@type":"FAQPage"/);
 assert.match(page, /Does submitting an event guarantee publication\?/);
-assert.match(page, /does not automatically create an official partnership/);
+assert.match(page, /does not automatically establish an official partnership/);
 assert.match(page, /collegeevent28@gmail\.com/);
 assert.match(page, /href="\/submit-event\/">/);
 assert.match(sitemap, /baseUrl \+ '\/campus-partners\/'/);
