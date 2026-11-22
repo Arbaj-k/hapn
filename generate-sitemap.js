@@ -8,6 +8,7 @@ const anonKey = (process.env.SUPABASE_ANON_KEY || '').trim();
 const staticUrls = [
   { loc: baseUrl + '/' },
   { loc: baseUrl + '/events/' },
+  { loc: baseUrl + '/university-events/' },
   { loc: baseUrl + '/events/directory/' },
   { loc: baseUrl + '/about/' },
   { loc: baseUrl + '/editorial-policy/' },
