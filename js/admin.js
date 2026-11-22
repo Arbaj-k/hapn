@@ -79,6 +79,43 @@
     }).join('');
   }
 
+  async function loadDashboardFests() {
+    const list = $('dashboard-fests');
+    if (!list) return;
+    const collegeId = CE.currentProfile && CE.currentProfile.college_id;
+    if (!collegeId) {
+      list.innerHTML = '<p class="muted">Fest editing is available to an active College Admin account assigned to a college.</p>';
+      return;
+    }
+    list.innerHTML = '<p class="muted">Loading fests…</p>';
+    const { data, error } = await sb.from('fests')
+      .select('id,title,college_name,start_date,end_date,is_published,created_at')
+      .eq('college_id', collegeId)
+      .order('created_at', { ascending: false });
+    if (error) {
+      list.innerHTML = '<p class="error-text">Could not load fests. Please refresh or check your admin access.</p>';
+      console.warn('[admin] fest list load failed:', error.code || 'unknown');
+      return;
+    }
+    if (!data || !data.length) {
+      list.innerHTML = '<p class="muted">No fests yet. Use “Create Fest” to add one.</p>';
+      return;
+    }
+    list.innerHTML = data.map((fest) =>
+      '<article class="activity-manager-item"><div class="activity-manager-copy">' +
+      '<h3>' + CE.esc(fest.title) + '</h3>' +
+      '<p>' + CE.esc(fest.college_name || '') + ' · ' +
+      CE.esc(fest.start_date ? CE.formatDate(fest.start_date) : 'Date not set') +
+      (fest.end_date ? ' – ' + CE.esc(CE.formatDate(fest.end_date)) : '') +
+      ' · ' + (fest.is_published ? 'Published' : 'Draft') + '</p>' +
+      '<div class="form-actions"><a class="btn btn-outline btn-sm" href="manage-fest-activities.html?id=' +
+      encodeURIComponent(fest.id) + '">Edit fest</a>' +
+      '<a class="btn btn-outline btn-sm" href="../fest/?id=' +
+      encodeURIComponent(fest.id) + '" target="_blank" rel="noopener">View page</a></div>' +
+      '</div></article>'
+    ).join('');
+  }
+
   async function loadEvents() {
     const { data, error } = await sb.from('events')
       .select('id,title,poster_url,date,time,end_date,end_time,category,is_published')
@@ -129,6 +166,7 @@
     $('cancel-delete').addEventListener('click', () => dialog.close());
     $('confirm-delete').addEventListener('click', confirmDelete);
     loadEvents();
+    loadDashboardFests();
   }
 
   /* =====================================================
