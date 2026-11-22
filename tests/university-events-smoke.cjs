@@ -16,7 +16,8 @@ assert.match(page, /does not currently claim comprehensive coverage/);
 assert.match(page, /href="\/events\/directory\/">/);
 assert.match(page, /href="\/submit-event\/">/);
 assert.match(sitemap, /baseUrl \+ '\/university-events\/'/);
-assert.match(home, /href="\/university-events\/">/);
+// Homepage footer intentionally stays concise; detailed guide links live on relevant hubs.
+assert.doesNotMatch(home, /href="\/university-events\/">/, 'homepage footer should not carry secondary guide links');
 assert.match(events, /href="\/university-events\/">/);
 assert.match(fests, /College &amp; University Fests/);
 
