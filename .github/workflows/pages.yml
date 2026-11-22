@@ -29,7 +29,10 @@ jobs:
       - name: Run production hardening regression tests
         run: node tests/production-hardening-smoke.cjs
 
-      - name: Verify generated event SEO pages\n        run: node tests/event-seo-smoke.cjs\n\n      - name: Verify Cloudflare security Worker
+      - name: Verify generated event SEO pages
+        run: node tests/event-seo-smoke.cjs
+
+      - name: Verify Cloudflare security Worker
         run: node tests/cloudflare-worker-smoke.cjs
 
       - name: Generate browser config from repository variables
