@@ -29,6 +29,9 @@ jobs:
       - name: Run production hardening regression tests
         run: node tests/production-hardening-smoke.cjs
 
+      - name: Verify Jaipur local GEO landing page
+        run: node tests/jaipur-geo-smoke.cjs
+
       - name: Verify trust and E-E-A-T transparency hub
         run: node tests/trust-eeat-smoke.cjs
 
