@@ -38,9 +38,9 @@ const description = html.match(/<meta name="description" content="([^"]*)"/);
 assert.ok(description && description[1].length <= 160, 'meta description should be <=160 characters');
 
 const directory = eventDirectoryHtml([event]);
-assert.match(directory, /<h1>College Events Directory<\\/h1>/);
-assert.match(directory, /href="https:\\/\\/hapn\\.info\\/event\\/jaipur-tech-innovation-fest-2026-15249dc1-49fe-42cf-9c18-fbe02d19b511\\/"/);
-assert.match(directory, /<meta name="robots" content="index, follow/);
-assert.match(directory, /1 published event listings/);
+assert.ok(directory.includes('<h1>College Events Directory</h1>'));
+assert.ok(directory.includes('https://hapn.info/event/jaipur-tech-innovation-fest-2026-15249dc1-49fe-42cf-9c18-fbe02d19b511/'));
+assert.ok(directory.includes('<meta name="robots" content="index, follow'));
+assert.ok(directory.includes('1 published event listings'));
 
 console.log('[event-seo] clean URLs, event pages, directory links, metadata, schema and safe links passed');
