@@ -389,7 +389,7 @@ if (require.main === module) main();
 
 function isSeoEligibleEvent(event) {
   return Boolean(event && String(event.id || '').trim() && String(event.title || '').trim() &&
-    /^\\d{4}-\\d{2}-\\d{2}$/.test(String(event.date || '').slice(0, 10)) &&
+    /^\d{4}-\d{2}-\d{2}$/.test(String(event.date || '').slice(0, 10)) &&
     !Number.isNaN(Date.parse(String(event.date || '') + 'T00:00:00Z')));
 }
 module.exports = { safeHttpsUrl, eventPageHtml, eventDirectoryHtml, eventSlug, eventPath, isSeoEligibleEvent };
