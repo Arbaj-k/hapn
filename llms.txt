@@ -1,34 +1,43 @@
 # Hapn
 
-> Hapn is a college events website that helps students discover upcoming workshops, competitions, hackathons, cultural events, and other college activities, with registration links provided by event organizers.
+> Hapn is a campus discovery and community platform. It helps students discover college events and fests, share useful campus requests through Hapn Connect, and take part in anonymous campus conversations.
 
-Hapn is a public, mobile-friendly website. Event listings and event details are presented to students without requiring a public login. Registration is handled through external Google Forms when provided by an event organizer.
+## What Hapn offers
 
-The site is built with plain HTML, CSS, and JavaScript on the frontend, with Supabase used for authentication, database storage, file storage, and row-level security. The repository is hosted on GitHub and the production website is served at https://hapn.info/.
+- College event discovery: workshops, hackathons, competitions, cultural programmes, sports and other campus activities.
+- College fests: discover fest information, schedules and related activities published on Hapn.
+- Hapn Connect (Share N Care): a campus community board for relevant student requests and updates, such as rides, lost and found, finding teammates and campus help. Public overview: [Hapn Connect](https://hapn.info/hapn-connect/). Community feed access may require sign-in and college eligibility; private or account-only posts are not public search content.
+- Hapn Anonymous Chat: campus conversations through available experiences such as Campus Lounge, Group Chat and Ask the Community.
+- Event submission: organisers can submit event information for review. Submission does not mean automatic publication.
 
-## Public Pages
+## Public canonical pages
 
-- [Hapn home](https://hapn.info/): Main landing page and featured/upcoming events.
-- [Events](https://hapn.info/events.html): Browse and filter public college events.
-- [About](https://hapn.info/about.html): Information about Hapn.
-- [Help](https://hapn.info/help.html): Help and usage information.
-- [Terms & Conditions](https://hapn.info/terms.html): Terms governing use of Hapn.
-- [Sitemap](https://hapn.info/sitemap.xml): XML sitemap of public indexable pages.
-- [Robots](https://hapn.info/robots.txt): Crawler guidance and sitemap location.
+- [Hapn Connect overview](https://hapn.info/hapn-connect/): Public explanation of the campus community board.
 
-## Event Information
+- [Hapn home](https://hapn.info/): Overview of the platform and featured campus discovery.
+- [College events](https://hapn.info/events/): Browse public event listings.
+- [College fests](https://hapn.info/fests/): Explore public fest listings.
+- [Hapn Connect](https://hapn.info/connect/board/): Learn about the campus community board.
+- [Anonymous campus chat](https://hapn.info/chat/): Learn about Hapn's chat experiences and safety limits.
+- [About Hapn](https://hapn.info/about/): Product purpose and feature overview.
+- [Help](https://hapn.info/help/): User guidance and support information.
+- [Terms and community guidelines](https://hapn.info/terms/): Rules and limitations for using Hapn.
+- [XML sitemap](https://hapn.info/sitemap.xml): Canonical public URLs.
+- [Robots.txt](https://hapn.info/robots.txt): Crawler access guidance.
 
-Event pages may be rendered from event data stored in Supabase. Event information can include the event title, description, date/time, venue, category, poster/image, registration link, and registration status. Event registration links may point to Google Forms or another external registration destination supplied by the organizer.
+## Important accuracy notes
 
-## Technical Context
+- Event details, schedules, venues and registration links may be supplied by organisers and can change. Users should verify important details with the organiser.
+- Hapn is a discovery and community platform; it is not automatically the organiser, ticket seller or registration authority for listed events.
+- Hapn Connect is intended for campus-related requests and updates. Users should avoid publishing private contact details or sensitive personal information.
+- Anonymous Chat uses an anonymous display experience; this does not guarantee complete or permanent anonymity or end-to-end encryption.
+- Some community experiences may require an eligible college account. Access and feature availability can vary.
 
-- Production site: https://hapn.info/
-- Source repository: https://github.com/Arbaj-k/College-Event-site
-- Frontend: HTML, CSS, JavaScript
-- Backend: Supabase
-- Hosting/deployment: Netlify
-- Registration: Google Forms or organizer-provided external registration links
+## Source and contact
 
-## Optional
+- Public website: https://hapn.info/
+- Source repository: https://github.com/Arbaj-k/hapn
+- Support: collegeevent28@gmail.com
+- Instagram: https://www.instagram.com/hapn.info/
 
-- [GitHub repository](https://github.com/Arbaj-k/College-Event-site): Source code and project documentation.
+This file is a concise factual guide for automated assistants. It is not a substitute for the linked pages, current event listings, or the site's terms.
