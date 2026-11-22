@@ -316,6 +316,8 @@ p { margin: 0 0 1rem; }
 .footer-tagline { margin: .5rem 0 0; }
 .footer-links { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; }
 .footer-links a { color: #dfe3f7; }
+.footer-links a.footer-admin-link { display: inline-flex; align-items: center; min-height: 40px; padding: .45rem .9rem; border: 1px solid rgba(255,255,255,.55); border-radius: 999px; color: #fff; font-weight: 700; text-decoration: none; background: rgba(255,255,255,.10); }
+.footer-links a.footer-admin-link:hover, .footer-links a.footer-admin-link:focus-visible { background: #fff; color: #101d19; }
 .footer-bottom { border-top: 1px solid rgba(255, 255, 255, .14); margin-top: 1.75rem; padding-top: 1rem; font-size: .9rem; }
 @media (min-width: 700px) { .footer-grid { grid-template-columns: 1.4fr 1fr; align-items: start; } }
 
