@@ -19,7 +19,10 @@ assert.match(page, /does not claim comprehensive listings/);
 assert.match(page, /not claims that Hapn currently has event inventory/);
 assert.match(page, /href="\/submit-event\/">/);
 assert.match(sitemap, /baseUrl \+ '\/international-university-events\/'/);
-for (const [name, source] of Object.entries({home, university, events})) {
+// Keep the homepage footer focused on essential links; detailed GEO guides
+// remain discoverable from the university and events hubs.
+for (const [name, source] of Object.entries({university, events})) {
   assert.match(source, /href="\/international-university-events\/">/, name + ' must link to international guide');
 }
+assert.doesNotMatch(home, /href="\/international-university-events\/">/, 'homepage footer should not carry secondary GEO links');
 console.log('[international-geo] canonical, WebPage/FAQ schema, regional guide, coverage caveat, sitemap and internal links passed');
