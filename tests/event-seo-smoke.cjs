@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('node:assert/strict');
-const { eventSlug, eventPath, eventPageHtml, safeHttpsUrl } = require('../generate-sitemap');
+const { eventSlug, eventPath, eventPageHtml, eventDirectoryHtml, safeHttpsUrl } = require('../generate-sitemap');
 
 const event = {
   id: '15249dc1-49fe-42cf-9c18-fbe02d19b511',
@@ -37,4 +37,10 @@ assert.match(html, /Poster for Jaipur Tech &amp; Innovation Fest 2026/);
 const description = html.match(/<meta name="description" content="([^"]*)"/);
 assert.ok(description && description[1].length <= 160, 'meta description should be <=160 characters');
 
-console.log('[event-seo] clean URLs, prerendered H1, metadata, schema and safe links passed');
+const directory = eventDirectoryHtml([event]);
+assert.match(directory, /<h1>College Events Directory<\\/h1>/);
+assert.match(directory, /href="https:\\/\\/hapn\\.info\\/event\\/jaipur-tech-innovation-fest-2026-15249dc1-49fe-42cf-9c18-fbe02d19b511\\/"/);
+assert.match(directory, /<meta name="robots" content="index, follow/);
+assert.match(directory, /1 published event listings/);
+
+console.log('[event-seo] clean URLs, event pages, directory links, metadata, schema and safe links passed');
