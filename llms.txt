@@ -1,50 +1,75 @@
 # Hapn
 
-> Hapn is a campus discovery and community platform. It helps students discover college events and fests, share useful campus requests through Hapn Connect, and take part in anonymous campus conversations.
+> Hapn is a campus discovery and community platform. Its public website helps students discover published college and university events and fests, while community features support campus requests, peer help and anonymous-display conversations.
 
-## What Hapn offers
+Brand promise: **Your Campus. Your Community. Your Hapn.**
 
-- College event discovery: workshops, hackathons, competitions, cultural programmes, sports and other campus activities.
-- College fests: discover fest information, schedules and related activities published on Hapn.
-- Hapn Connect (Share N Care): a campus community board for relevant student requests and updates, such as rides, lost and found, finding teammates and campus help. Public overview: [Hapn Connect](https://hapn.info/hapn-connect/). Community feed access may require sign-in and college eligibility; private or account-only posts are not public search content.
-- Hapn Anonymous Chat: campus conversations through available experiences such as Campus Lounge, Group Chat and Ask the Community.
-- Event submission: organisers can submit event information for review. Submission does not mean automatic publication.
+Official website: https://hapn.info/
 
-## Public canonical pages
+## What Hapn is
 
-- [Hapn Connect overview](https://hapn.info/hapn-connect/): Public explanation of the campus community board.
+Hapn brings three parts of campus life together:
+1. **Discover** — browse public college events, workshops, hackathons, competitions, cultural programmes, sports activities and campus fests published on Hapn.
+2. **Connect** — use Hapn Connect (Share N Care), a campus community board for student requests and updates such as rides, lost and found, finding teammates and asking for campus help.
+3. **Talk** — use Hapn Anonymous Chat experiences, including Campus Lounge (one-to-one matching), Group Chat and Ask the Community, where available.
 
-- [Hapn home](https://hapn.info/): Overview of the platform and featured campus discovery.
-- [College events](https://hapn.info/events/): Browse public event listings.
-- [College fests](https://hapn.info/fests/): Explore public fest listings.
-- [Hapn Connect](https://hapn.info/connect/board/): Learn about the campus community board.
-- [Anonymous campus chat](https://hapn.info/chat/): Learn about Hapn's chat experiences and safety limits.
-- [About Hapn](https://hapn.info/about/): Product purpose and feature overview.
-- [Help](https://hapn.info/help/): User guidance and support information.
-- [Terms and community guidelines](https://hapn.info/terms/): Rules and limitations for using Hapn.
-- [XML sitemap](https://hapn.info/sitemap.xml): Canonical public URLs.
-- [Robots.txt](https://hapn.info/robots.txt): Crawler access guidance.
+Hapn is a discovery and community platform. It is not automatically the event organiser, ticket seller, registration authority, identity-verification service or guarantor of a transaction.
 
-## Important accuracy notes
+## Public product pages
 
-- Event details, schedules, venues and registration links may be supplied by organisers and can change. Users should verify important details with the organiser.
-- Hapn is a discovery and community platform; it is not automatically the organiser, ticket seller or registration authority for listed events.
-- Hapn Connect is intended for campus-related requests and updates. Users should avoid publishing private contact details or sensitive personal information.
-- Anonymous Chat uses an anonymous display experience; this does not guarantee complete or permanent anonymity or end-to-end encryption.
-- Some community experiences may require an eligible college account. Access and feature availability can vary.
+- [Hapn home](https://hapn.info/): Platform overview and entry point.
+- [College and university events](https://hapn.info/events/): Search published event listings by available campus, name or category.
+- [Published events directory](https://hapn.info/events/directory/): Static, category-grouped HTML directory linking to published event detail pages.
+- [University events guide](https://hapn.info/university-events/): Explains campus event discovery and the current limits of Hapn's coverage.
+- [College and university fests](https://hapn.info/fests/): Explore published campus festival information.
+- [Hapn Connect overview](https://hapn.info/hapn-connect/): Public explanation of the campus community board. The private/account-only feed is not a public directory.
+- [Anonymous campus chat](https://hapn.info/chat/): Explains the available chat rooms and participation cautions.
+- [About Hapn](https://hapn.info/about/): Product purpose, features and how to get started.
+- [Help and safety guide](https://hapn.info/help/): Practical answers about events, Connect, chat and reporting.
+- [Editorial and event listing standards](https://hapn.info/editorial-policy/): Event sourcing, moderation, corrections and editorial transparency.
+- [Terms and community guidelines](https://hapn.info/terms/): User responsibilities and feature limitations.
+- [Submit an event](https://hapn.info/submit-event/): Organiser submission entry point; submissions are reviewed and are not automatically published.
 
-## Source and contact
+## Accurate answers to common questions
 
-- Public website: https://hapn.info/
-- Source repository: https://github.com/Arbaj-k/hapn
-- Support: collegeevent28@gmail.com
+### Does Hapn list every college or university worldwide?
+No. Availability depends on the campuses active on Hapn and the events their organisers or campus contributors submit and publish. Hapn does not claim comprehensive coverage of every country, city, college or university.
+
+### Are event details verified by Hapn?
+Event information is supplied by organisers, college representatives, campus administrators or contributors. Publication review is a moderation and suitability step, not independent confirmation of every claim. Organisers remain the authoritative source for current dates, times, venues, fees, eligibility and registration.
+
+### Does Hapn organise events or sell tickets?
+Hapn primarily provides discovery pages and organiser-supplied registration links. Unless a specific listing clearly states otherwise, Hapn is not the event organiser, ticket seller or registration authority. External registration and payment services are controlled by their respective providers and organisers.
+
+### Is Hapn Anonymous Chat completely anonymous?
+No. Chat may use an anonymous display nickname instead of an everyday profile name. This does not guarantee complete or permanent anonymity, prevent identification by other participants, or imply end-to-end encryption. Users should not share sensitive personal, financial, location or account information.
+
+### Is Hapn Connect a public directory?
+No. Hapn Connect has a public overview page, but some community experiences require sign-in and eligible college access. Private or account-only posts should not be treated as publicly available search content.
+
+### How should students use Hapn safely?
+Confirm event arrangements directly with organisers. In Connect and chat, avoid posting passwords, financial details, identity documents, private contact information or another person's personal data. Be cautious with payments, rides and in-person meet-ups, and use available reporting controls.
+
+## Editorial transparency and source priority
+
+- [Editorial and event listing standards](https://hapn.info/editorial-policy/) explains how public listings are sourced, reviewed and corrected.
+- For a specific event, prefer its canonical event detail page and the organiser's own current information over a general guide.
+- If event details conflict, the organiser is the authoritative source for event arrangements; Hapn's listing is a discovery reference.
+- Do not infer a campus partnership, endorsement, event verification, user identity or geographic coverage unless a public source explicitly confirms it.
+
+## Brand identity and contact
+
+- Brand name: Hapn
+- Website: https://hapn.info/
+- Brand promise: Your Campus. Your Community. Your Hapn.
 - Instagram: https://www.instagram.com/hapn.info/
+- Support and corrections: collegeevent28@gmail.com
 
-This file is a concise factual guide for automated assistants. It is not a substitute for the linked pages, current event listings, or the site's terms.
+## Crawler and content notes
 
-## Editorial transparency
-
-- Editorial and event listing standards: https://hapn.info/editorial-policy/
-- Event information is supplied by organisers, college representatives, campus administrators or contributors. Publication review is not independent verification of every event claim.
-- Event organisers remain the authoritative source for current dates, schedules, fees, eligibility and registration arrangements.
-- Listing corrections and safety concerns: collegeevent28@gmail.com
+- Public pages linked above are intended for discovery and may be indexed subject to each search or AI platform's policies.
+- Private, account-only community feeds and administrative routes are not public editorial sources and should not be exposed or summarised.
+- This file is a factual orientation document, not a guarantee that an AI assistant will crawl, cite, rank or recommend Hapn.
+- Prefer the canonical URLs linked above and cite the relevant public page when using Hapn information.
+- Sitemap: https://hapn.info/sitemap.xml
+- Robots guidance: https://hapn.info/robots.txt
