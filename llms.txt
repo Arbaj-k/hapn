@@ -6,11 +6,11 @@
 
 - College event discovery: workshops, hackathons, competitions, cultural programmes, sports and other campus activities.
 - College fests: discover fest information, schedules and related activities published on Hapn.
-- Hapn Connect (Share N Care): a campus community board for relevant student requests and updates, such as rides, lost and found, finding teammates and campus help. Access to community content may depend on sign-in and college eligibility; private or account-only posts are not a public search index.
+- Hapn Connect (Share N Care): a campus community board for relevant student requests and updates, such as rides, lost and found, finding teammates and campus help. Public overview: [Hapn Connect](https://hapn.info/hapn-connect/). Community feed access may require sign-in and college eligibility. Access to community content may depend on sign-in and college eligibility; private or account-only posts are not a public search index.
 - Hapn Anonymous Chat: campus conversations through available experiences such as Campus Lounge, Group Chat and Ask the Community.
 - Event submission: organisers can submit event information for review. Submission does not mean automatic publication.
 
-## Public canonical pages
+## Public canonical pages\n\n- [Hapn Connect overview](https://hapn.info/hapn-connect/): Public explanation of the campus community board.
 
 - [Hapn home](https://hapn.info/): Overview of the platform and featured campus discovery.
 - [College events](https://hapn.info/events/): Browse public event listings.
