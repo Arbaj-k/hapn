@@ -238,13 +238,13 @@ function eventDirectoryHtml(events) {
     const url = baseUrl + eventPath(event);
     const date = escapeHtml(event.date || 'Date to be announced');
     const venue = escapeHtml(event.venue || 'Venue to be announced');
-    const summary = escapeHtml(String(event.short_description || event.description || '').replace(/\\s+/g, ' ').trim().slice(0, 180));
+    const summary = escapeHtml(String(event.short_description || event.description || '').replace(/\s+/g, ' ').trim().slice(0, 180));
     return '<li class="directory-event"><a href="' + escapeHtml(url) + '">' + title + '</a><p>' + date + ' · ' + venue + '</p>' + (summary ? '<p>' + summary + '</p>' : '') + '</li>';
-  }).join('\\n');
+  }).join('');
 
   const sections = groups.map((group, index) =>
     '<section class="directory-category" aria-labelledby="directory-category-' + index + '"><h2 id="directory-category-' + index + '">' + escapeHtml(group.name) + '</h2><ul>' + eventRows(group.events) + '</ul></section>'
-  ).join('\\n');
+  ).join('');
   const description = 'Browse ' + published.length + ' published college event listings on Hapn, grouped by category with direct links to event details.';
   return `<!DOCTYPE html>
 <html lang="en">
