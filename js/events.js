@@ -27,7 +27,7 @@
       .replace(/^-+|-+$/g, '')
       .slice(0, 64)
       .replace(/-+$/g, '') || 'college-event';
-    return '/event/' + titleSlug + '-' + String(ev.id || '').slice(0, 8).toLowerCase() + '/';
+    return '/event/' + titleSlug + '-' + String(ev.id || '').toLowerCase() + '/';
   }
 
 
