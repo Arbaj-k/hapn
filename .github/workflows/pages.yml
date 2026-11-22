@@ -29,6 +29,9 @@ jobs:
       - name: Run production hardening regression tests
         run: node tests/production-hardening-smoke.cjs
 
+      - name: Verify international GEO discovery guide
+        run: node tests/international-geo-smoke.cjs
+
       - name: Verify Jaipur local GEO landing page
         run: node tests/jaipur-geo-smoke.cjs
 
