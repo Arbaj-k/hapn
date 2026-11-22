@@ -407,8 +407,9 @@
     const box = document.getElementById('event-detail');
     const notFound = (msg) => { box.innerHTML = '<div class="empty"><p class="empty-title">' + CE.esc(msg) + '</p><p><a href="/events/">Browse all events</a></p></div>'; };
 
-    const pathMatch = location.pathname.match(/\/event-([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\.html$/i);
-    const id = new URLSearchParams(location.search).get('id') || (pathMatch ? pathMatch[1] : '');
+    const pathMatch = location.pathname.match(/\\/event\\/[^/]+-([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\\/?$/i);
+    const legacyPathMatch = location.pathname.match(/\\/event-([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\\.html$/i);
+    const id = new URLSearchParams(location.search).get('id') || (pathMatch ? pathMatch[1] : (legacyPathMatch ? legacyPathMatch[1] : ''));
     if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) return notFound('Event not found.');
 
     const problem = CE.setupProblem();
@@ -423,7 +424,7 @@
     document.title = data.title + ' – Hapn';
 
     const canonical = document.getElementById('canonical-link');
-    if (canonical) canonical.href = location.origin + (location.pathname.match(/\/event-[0-9a-f-]+\.html$/i) ? location.pathname : '/event/?id=' + encodeURIComponent(data.id));
+    if (canonical) canonical.href = location.origin + eventPath(data);
 
     let description = document.querySelector('meta[name="description"]');
     if (!description) {
