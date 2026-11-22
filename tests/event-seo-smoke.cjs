@@ -35,12 +35,19 @@ assert.match(html, /<link rel="canonical" href="https:\/\/hapn\.info\/event\/jai
 assert.match(html, /<meta name="description" content="A student technology festival/);
 assert.equal(html.includes('\\n<meta name="robots"'), false);
 assert.match(html, /"@type":"Event"/);
+assert.match(html, /"eventStatus":"https:\/\/schema.org\/EventScheduled"/);
+assert.match(html, /"dateModified":"2026-11-20T12:30:00.000Z"/);
+assert.match(html, /Listing last updated/);
+
 assert.match(html, /"addressLocality":"Jaipur"/);
 assert.match(html, /Register Now/);
 assert.match(html, /Poster for Jaipur Tech &amp; Innovation Fest 2026/);
 
 const description = html.match(/<meta name="description" content="([^"]*)"/);
 assert.ok(description && description[1].length <= 160, 'meta description should be <=160 characters');
+
+const pastHtml = eventPageHtml({ id: 'past-1', title: 'Past event', date: '2020-01-01', end_date: '2020-01-01', time: '10:00:00', end_time: '11:00:00', venue: 'Hall' });
+assert.match(pastHtml, /"eventStatus":"https:\/\/schema.org\/EventCompleted"/);
 
 const directory = eventDirectoryHtml([event]);
 assert.ok(directory.includes('<h1>College Events Directory</h1>'));
