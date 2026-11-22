@@ -262,10 +262,11 @@ async function main() {
 
   fs.writeFileSync(
     'sitemap.xml',
-    '<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-      body + '
-</urlset>\n'
+    `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${body}
+</urlset>
+`
   );
 
   console.log('[sitemap] Generated ' + urls.length + ' URLs (' + events.length + ' published events).');
