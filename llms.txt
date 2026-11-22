@@ -15,8 +15,8 @@
 - [Hapn home](https://hapn.info/): Overview of the platform and featured campus discovery.
 - [College events](https://hapn.info/events/): Browse public event listings.
 - [College fests](https://hapn.info/fests/): Explore public fest listings.
-- [Hapn Connect](https://hapn.info/connect/): Learn about the campus community board.
-- [Anonymous campus chat](https://hapn.info/anonymous-chat/): Learn about Hapn's chat experiences and safety limits.
+- [Hapn Connect](https://hapn.info/connect/board/): Learn about the campus community board.
+- [Anonymous campus chat](https://hapn.info/chat/): Learn about Hapn's chat experiences and safety limits.
 - [About Hapn](https://hapn.info/about/): Product purpose and feature overview.
 - [Help](https://hapn.info/help/): User guidance and support information.
 - [Terms and community guidelines](https://hapn.info/terms/): Rules and limitations for using Hapn.
