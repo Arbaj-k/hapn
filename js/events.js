@@ -18,6 +18,19 @@
 
   const byDateTime = (a, b) => (a.date + ' ' + (a.time || '')).localeCompare(b.date + ' ' + (b.time || ''));
 
+  function eventPath(ev) {
+    const titleSlug = String(ev.title || 'college-event')
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 64)
+      .replace(/-+$/g, '') || 'college-event';
+    return '/event/' + titleSlug + '-' + String(ev.id || '').toLowerCase() + '/';
+  }
+
+
   /* Upcoming events first (soonest first), then past events (most recent first). */
   function sortForDisplay(list) {
     const upcoming = list.filter((e) => CE.eventStatus(e) === 'upcoming').sort((a, b) => Number(b.is_pinned) - Number(a.is_pinned) || byDateTime(a, b));
@@ -28,7 +41,7 @@
   function cardHtml(ev, index) {
     const status = CE.eventStatus(ev);
     const link = CE.httpsUrl(ev.registration_link);
-    const detailUrl = '/event/?id=' + encodeURIComponent(ev.id);
+    const detailUrl = eventPath(ev);
     const canRegister = CE.registrationOpen(ev) && link;
     const posterDate = ev.date ? new Date(String(ev.date).slice(0, 10) + 'T12:00:00') : null;
     const posterDateValid = posterDate && !Number.isNaN(posterDate.getTime());
@@ -372,7 +385,7 @@
 
     return '' +
       '<div class="detail">' +
-        '<div class="detail-poster detail-poster-wrap"><img class="poster-img" src="' + CE.esc(CE.posterSrc(ev.poster_url)) + '" alt="Poster for ' + CE.esc(ev.title) + '" loading="eager" decoding="async" fetchpriority="high" width="800" height="1000"><button class="poster-share-button share-button" type="button" data-share-url="/event/?id=' + encodeURIComponent(ev.id) + '" data-share-title="' + CE.esc(ev.title) + ' – Hapn" data-share-image="' + CE.esc(CE.posterSrc(ev.poster_url)) + '" data-share-text="' + CE.esc('Check out ' + ev.title + ' on Hapn!') + '" aria-label="Share ' + CE.esc(ev.title) + '" title="Share event"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button></div>' +
+        '<div class="detail-poster detail-poster-wrap"><img class="poster-img" src="' + CE.esc(CE.posterSrc(ev.poster_url)) + '" alt="Poster for ' + CE.esc(ev.title) + '" loading="eager" decoding="async" fetchpriority="high" width="800" height="1000"><button class="poster-share-button share-button" type="button" data-share-url="' + eventPath(ev) + '" data-share-title="' + CE.esc(ev.title) + ' – Hapn" data-share-image="' + CE.esc(CE.posterSrc(ev.poster_url)) + '" data-share-text="' + CE.esc('Check out ' + ev.title + ' on Hapn!') + '" aria-label="Share ' + CE.esc(ev.title) + '" title="Share event"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button></div>' +
         '<div class="detail-info">' +
           '<div class="detail-pills"><span class="pill">' + CE.esc(ev.category || 'College event') + '</span>' + (status !== 'upcoming' ? '<span class="pill pill-ended">Ended</span>' : (ev.date ? (function(){ const d=new Date(String(ev.date).slice(0,10)+'T00:00:00'); const t=new Date(); t.setHours(0,0,0,0); const n=Math.ceil((d-t)/86400000); return '<span class="pill pill-countdown">' + (n > 0 ? 'Starts in ' + n + (n===1?' day':' days') : (n===0?'Today':'Upcoming')) + '</span>'; })() : '')) + '</div>' +
           '<h1>' + CE.esc(ev.title) + '</h1>' +
@@ -394,8 +407,9 @@
     const box = document.getElementById('event-detail');
     const notFound = (msg) => { box.innerHTML = '<div class="empty"><p class="empty-title">' + CE.esc(msg) + '</p><p><a href="/events/">Browse all events</a></p></div>'; };
 
-    const pathMatch = location.pathname.match(/\/event-([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\.html$/i);
-    const id = new URLSearchParams(location.search).get('id') || (pathMatch ? pathMatch[1] : '');
+    const pathMatch = location.pathname.match(/\/event\/[^/]+-([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\/?$/i);
+    const legacyPathMatch = location.pathname.match(/\/event-([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\.html$/i);
+    const id = new URLSearchParams(location.search).get('id') || (pathMatch ? pathMatch[1] : (legacyPathMatch ? legacyPathMatch[1] : ''));
     if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) return notFound('Event not found.');
 
     const problem = CE.setupProblem();
@@ -410,7 +424,7 @@
     document.title = data.title + ' – Hapn';
 
     const canonical = document.getElementById('canonical-link');
-    if (canonical) canonical.href = location.origin + (location.pathname.match(/\/event-[0-9a-f-]+\.html$/i) ? location.pathname : '/event/?id=' + encodeURIComponent(data.id));
+    if (canonical) canonical.href = location.origin + eventPath(data);
 
     let description = document.querySelector('meta[name="description"]');
     if (!description) {

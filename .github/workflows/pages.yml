@@ -29,6 +29,9 @@ jobs:
       - name: Run production hardening regression tests
         run: node tests/production-hardening-smoke.cjs
 
+      - name: Verify generated event SEO pages
+        run: node tests/event-seo-smoke.cjs
+
       - name: Verify Cloudflare security Worker
         run: node tests/cloudflare-worker-smoke.cjs
 
@@ -52,13 +55,12 @@ jobs:
           mkdir -p _site
           rsync -a --exclude=".git/" --exclude=".github/" --exclude="_site/" ./ _site/
           test -f sitemap.xml
-          sitemap_event_count=$(grep -c '<loc>https://hapn.info/event/?id=' sitemap.xml || true)
+          sitemap_event_count=$(grep -Ec '<loc>https://hapn.info/event/[^<]+/</loc>' sitemap.xml || true)
           echo "Sitemap event URLs: $sitemap_event_count"
           test "$sitemap_event_count" -gt 0
           cp sitemap.xml _site/sitemap.xml
-          find . -maxdepth 1 -type f -name "event-*.html" -exec cp {} _site/ \;
           test -f _site/index.html
-          site_event_count=$(find _site -maxdepth 1 -type f -name "event-*.html" | wc -l)
+          site_event_count=$(find _site/event -mindepth 2 -maxdepth 2 -type f -name index.html 2>/dev/null | wc -l)
           echo "Pages artifact event pages: $site_event_count"
           echo "Pages output contains:"
           ls -la _site | sed -n "1,80p"
@@ -68,7 +70,7 @@ jobs:
         run: |
           set -euo pipefail
           echo "Sitemap URL count: $(grep -c '<loc>' sitemap.xml)"
-          grep -q '<loc>https://hapn.info/event/?id=' sitemap.xml
+          grep -Eq '<loc>https://hapn.info/event/[^<]+/</loc>' sitemap.xml
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

@@ -1,5 +1,6 @@
 /* Generate a sitemap containing public pages and published event detail URLs. */
 const fs = require('node:fs');
+const path = require('node:path');
 const baseUrl = 'https://hapn.info';
 const supabaseUrl = (process.env.SUPABASE_URL || '').trim().replace(/\/$/, '');
 const anonKey = (process.env.SUPABASE_ANON_KEY || '').trim();
@@ -50,10 +51,28 @@ function safeHttpsUrl(value) {
   }
 }
 
+function eventSlug(event) {
+  const titleSlug = String(event.title || 'college-event')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 64)
+    .replace(/-+$/g, '') || 'college-event';
+  const id = String(event.id || '').toLowerCase();
+  return titleSlug + '-' + id;
+}
+
+function eventPath(event) {
+  return '/event/' + eventSlug(event) + '/';
+}
 function eventPageHtml(event) {
   const title = escapeHtml(event.title || 'College Event');
+  const descriptionText = String(event.short_description || event.description || 'College event details and registration.').replace(/\s+/g, ' ').trim();
   const description = escapeHtml(event.description || event.short_description || 'College event details and registration.');
-  const canonical = baseUrl + '/event/?id=' + encodeURIComponent(event.id);
+  const metaDescription = escapeHtml(descriptionText.length > 157 ? descriptionText.slice(0, 157).trimEnd() + '…' : descriptionText);
+  const canonical = baseUrl + eventPath(event);
   const posterUrl = safeHttpsUrl(event.poster_url);
   const image = posterUrl ? escapeHtml(posterUrl) : baseUrl + '/assets/images/og-image.png';
   const date = escapeHtml(event.date || '');
@@ -78,7 +97,7 @@ function eventPageHtml(event) {
     eventStatus: 'https://schema.org/EventScheduled',
     url: canonical,
     image: [event.poster_url || baseUrl + '/assets/images/og-image.png'],
-    location: { '@type': 'Place', name: event.venue || 'College campus' }
+    location: event.venue ? { '@type': 'Place', name: event.venue } : undefined
   };
 
   // VGU Campus has a verified public address; add it only when the event venue is VGU Campus.
@@ -108,7 +127,8 @@ function eventPageHtml(event) {
     gtag('config', 'G-EYVRV7CS7B');
   </script>
 <title>${title} – College Event | Hapn</title>
-<meta name="description" content="${description}">\n<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="description" content="${metaDescription}">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="${canonical}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Hapn">
@@ -199,8 +219,9 @@ document.addEventListener('click', async function (event) {
 
 async function generateEventPages(events) {
   for (const event of events) {
-    const fileName = 'event-' + String(event.id).replace(/[^a-zA-Z0-9_-]/g, '') + '.html';
-    fs.writeFileSync(fileName, eventPageHtml(event));
+    const directory = path.join('event', eventSlug(event));
+    fs.mkdirSync(directory, { recursive: true });
+    fs.writeFileSync(path.join(directory, 'index.html'), eventPageHtml(event));
   }
 }
 
@@ -222,7 +243,7 @@ async function main() {
   await generateEventPages(events);
 
   const eventUrls = events.map((event) => ({
-    loc: baseUrl + '/event/?id=' + encodeURIComponent(event.id),
+    loc: baseUrl + eventPath(event),
     lastmod: event.updated_at ? new Date(event.updated_at).toISOString() : undefined
   }));
 
@@ -241,8 +262,11 @@ async function main() {
 
   fs.writeFileSync(
     'sitemap.xml',
-    '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-      body + '\n</urlset>\n'
+    `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${body}
+</urlset>
+`
   );
 
   console.log('[sitemap] Generated ' + urls.length + ' URLs (' + events.length + ' published events).');
@@ -251,4 +275,4 @@ async function main() {
 
 if (require.main === module) main();
 
-module.exports = { safeHttpsUrl, eventPageHtml };
+module.exports = { safeHttpsUrl, eventPageHtml, eventSlug, eventPath };
