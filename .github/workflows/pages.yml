@@ -70,7 +70,7 @@ jobs:
         run: |
           set -euo pipefail
           echo "Sitemap URL count: $(grep -c '<loc>' sitemap.xml)"
-          grep -Eq '<loc>https://hapn.info/event/[^<]+/</loc>'
+          grep -Eq '<loc>https://hapn.info/event/[^<]+/</loc>' sitemap.xml
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
