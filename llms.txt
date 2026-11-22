@@ -17,6 +17,8 @@ Hapn is a discovery and community platform. It is not automatically the event or
 
 ## Public product pages
 
+- [Hapn questions and answers](https://hapn.info/answers/): Human-readable answers about the product, event sourcing, community features, coverage and safety.
+
 - [Hapn home](https://hapn.info/): Platform overview and entry point.
 - [College and university events](https://hapn.info/events/): Search published event listings by available campus, name or category.
 - [Published events directory](https://hapn.info/events/directory/): Static, category-grouped HTML directory linking to published event detail pages.
