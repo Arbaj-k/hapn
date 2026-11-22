@@ -105,7 +105,7 @@ function eventPageHtml(event) {
     ? event.end_date + 'T' + event.end_time
     : (event.end_date || event.date);
   const endDay = String(event.end_date || event.date || '').slice(0, 10);
-  const isCompleted = /^\\d{4}-\\d{2}-\\d{2}$/.test(endDay) &&
+  const isCompleted = /^\d{4}-\d{2}-\d{2}$/.test(endDay) &&
     endDay < new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
   const updatedAt = event.updated_at && !Number.isNaN(Date.parse(event.updated_at))
     ? new Date(event.updated_at).toISOString()
