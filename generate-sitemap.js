@@ -61,7 +61,7 @@ function eventSlug(event) {
     .slice(0, 64)
     .replace(/-+$/g, '') || 'college-event';
   const id = String(event.id || '').toLowerCase();
-  return titleSlug + '-' + id.slice(0, 8);
+  return titleSlug + '-' + id;
 }
 
 function eventPath(event) {
