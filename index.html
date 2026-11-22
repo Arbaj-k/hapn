@@ -33,13 +33,34 @@
   <link rel="canonical" href="https://hapn.info/">
   <script type="application/ld+json">
   [
-    {"@context":"https://schema.org","@type":"Organization","name":"Hapn","url":"https://hapn.info/","logo":"https://hapn.info/assets/images/logo.svg","email":"collegeevent28@gmail.com","sameAs":["https://www.instagram.com/hapn.info/"]},
-    {"@context":"https://schema.org","@type":"WebSite","name":"Hapn","url":"https://hapn.info/","description":"Discover college and university events, campus fests, workshops, hackathons and student communities on Hapn. Explore campus activities, Hapn Connect and anonymous chat.","inLanguage":"en"}
+    {
+      "@context":"https://schema.org",
+      "@type":"Organization",
+      "@id":"https://hapn.info/#organization",
+      "name":"Hapn",
+      "url":"https://hapn.info/",
+      "description":"Hapn is a campus discovery and community platform for published college and university events, campus fests, Hapn Connect student requests and anonymous-display campus conversations.",
+      "slogan":"Your Campus. Your Community. Your Hapn.",
+      "logo":{"@type":"ImageObject","url":"https://hapn.info/assets/images/logo.svg"},
+      "email":"collegeevent28@gmail.com",
+      "sameAs":["https://www.instagram.com/hapn.info/"],
+      "knowsAbout":["College events","University festivals","Campus activities","Student communities","Campus event discovery","Student-to-student campus help"]
+    },
+    {
+      "@context":"https://schema.org",
+      "@type":"WebSite",
+      "@id":"https://hapn.info/#website",
+      "name":"Hapn",
+      "url":"https://hapn.info/",
+      "description":"Discover published college and university events, campus fests, workshops, hackathons and student communities on Hapn. Explore Hapn Connect and Anonymous Chat.",
+      "publisher":{"@id":"https://hapn.info/#organization"},
+      "inLanguage":"en"
+    }
   ]
   </script>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Hapn">
-  <meta property="og:title" content="Hapn | College Events, Fests &amp; Campus Community">
+  <meta property="og:title" content="Hapn | College &amp; University Events, Fests &amp; Campus Community">
   <meta property="og:description" content="Discover college and university events, campus fests, workshops, hackathons and student communities on Hapn. Explore campus activities, Hapn Connect and anonymous chat.">
   <meta property="og:url" content="https://hapn.info/">
   <meta property="og:image" content="https://hapn.info/assets/images/og-image.png">
@@ -48,7 +69,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Hapn logo">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Hapn | College Events, Fests &amp; Campus Community">
+  <meta name="twitter:title" content="Hapn | College &amp; University Events, Fests &amp; Campus Community">
   <meta name="twitter:description" content="Discover college and university events, campus fests, workshops, hackathons and student communities on Hapn. Explore campus activities, Hapn Connect and anonymous chat.">
   <meta name="twitter:image" content="https://hapn.info/assets/images/og-image.png">
   <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
