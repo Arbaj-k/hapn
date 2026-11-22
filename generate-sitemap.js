@@ -10,8 +10,7 @@ const staticUrls = [
   { loc: baseUrl + '/about/' },\n  { loc: baseUrl + '/fests/' },\n  { loc: baseUrl + '/hapn-connect/' },\n  { loc: baseUrl + '/chat/' },
   { loc: baseUrl + '/help/' },
   { loc: baseUrl + '/terms/' },
-  { loc: baseUrl + '/submit-event/' },
-  { loc: baseUrl + '/fests/' }
+  { loc: baseUrl + '/submit-event/' }
 ];
 
 
