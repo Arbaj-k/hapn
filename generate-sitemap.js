@@ -10,6 +10,7 @@ const staticUrls = [
   { loc: baseUrl + '/events/' },
   { loc: baseUrl + '/university-events/' },
   { loc: baseUrl + '/campus-partners/' },
+  { loc: baseUrl + '/trust/' },
   { loc: baseUrl + '/events/directory/' },
   { loc: baseUrl + '/about/' },
   { loc: baseUrl + '/editorial-policy/' },
