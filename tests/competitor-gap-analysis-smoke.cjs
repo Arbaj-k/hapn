@@ -1,0 +1,10 @@
+'use strict';
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const report = fs.readFileSync('docs/competitor-ai-citation-gap-analysis.md','utf8');
+const csv = fs.readFileSync('docs/competitor-research.csv','utf8');
+for (const name of ['Unstop','Techsnap','FESTOOO','Eventopia','St. Xavier','Synergy']) assert.ok(report.includes(name), 'missing competitor/source '+name);
+for (const term of ['qualitative snapshot','not proof of a ranking position','not independently verified','fake testimonials','doorway pages','last-updated']) assert.ok(report.toLowerCase().includes(term.toLowerCase()), 'missing research guardrail '+term);
+assert.ok(csv.split('\n').length >= 7, 'expected competitor research rows');
+assert.ok(csv.includes('official_source') && csv.includes('research_date'));
+console.log('[competitor-gap-analysis] competitor coverage, evidence limits and anti-fabrication guardrails passed');

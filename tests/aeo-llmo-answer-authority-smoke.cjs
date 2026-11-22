@@ -1,0 +1,17 @@
+'use strict';
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const page = fs.readFileSync('answers/index.html', 'utf8');
+const sitemap = fs.readFileSync('generate-sitemap.js', 'utf8');
+const llms = fs.readFileSync('llms.txt', 'utf8');
+const help = fs.readFileSync('help/index.html', 'utf8');
+assert.match(page, /<title>Hapn Questions &amp; Answers/);
+assert.match(page, /<link rel="canonical" href="https:\/\/hapn\.info\/answers\/">/);
+assert.match(page, /"@type":"FAQPage"/);
+assert.match(page, /What is Hapn\?/);
+assert.match(page, /does not guarantee complete or permanent anonymity/);
+assert.match(page, /does not claim comprehensive coverage/);
+assert.match(sitemap, /baseUrl \+ '\/answers\/'/);
+assert.match(llms, /https:\/\/hapn\.info\/answers\//);
+assert.match(help, /href="\/answers\/">Hapn Questions &amp; Answers/);
+console.log('[aeo-llmo-answer-authority] answer hub, FAQ schema, sitemap, llms.txt and internal link passed');

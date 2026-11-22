@@ -15,7 +15,16 @@ Hapn brings three parts of campus life together:
 
 Hapn is a discovery and community platform. It is not automatically the event organiser, ticket seller, registration authority, identity-verification service or guarantor of a transaction.
 
+## Product knowledge references
+
+- [College Event Discovery on Hapn](https://hapn.info/knowledge/events/): How Hapn helps students discover published college events, workshops, hackathons and competitions.
+- [College Fests on Hapn](https://hapn.info/knowledge/fests/): Learn how Hapn presents published college festivals, activities and organiser registration information.
+- [Hapn Connect — Campus Community Board](https://hapn.info/knowledge/connect/): Understand Hapn Connect, a campus board for student requests, peer help, lost and found and finding teammates.
+- [Hapn Anonymous Chat — Campus Conversations](https://hapn.info/knowledge/anonymous-chat/): How Hapn's campus chat experiences work and important privacy and safety limits to understand.
+
 ## Public product pages
+
+- [Hapn questions and answers](https://hapn.info/answers/): Human-readable answers about the product, event sourcing, community features, coverage and safety.
 
 - [Hapn home](https://hapn.info/): Platform overview and entry point.
 - [College and university events](https://hapn.info/events/): Search published event listings by available campus, name or category.
