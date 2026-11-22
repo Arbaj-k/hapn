@@ -105,7 +105,7 @@ function eventPageHtml(event) {
     : (event.end_date || event.date);
   const endDay = String(event.end_date || event.date || '').slice(0, 10);
   const isCompleted = /^\\d{4}-\\d{2}-\\d{2}$/.test(endDay) &&
-    endDay < new Date().toISOString().slice(0, 10);
+    endDay < new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
   const updatedAt = event.updated_at && !Number.isNaN(Date.parse(event.updated_at))
     ? new Date(event.updated_at).toISOString()
     : '';
@@ -347,10 +347,10 @@ async function main() {
     process.exit(1);
   }
 
-  await generateEventPages(events);
-  generateEventDirectory(events);
-
   const eligibleEvents = events.filter(isSeoEligibleEvent);
+  await generateEventPages(eligibleEvents);
+  generateEventDirectory(eligibleEvents);
+
   const skippedEvents = events.length - eligibleEvents.length;
   const eventUrls = eligibleEvents.map((event) => ({
     loc: baseUrl + eventPath(event),
@@ -359,8 +359,8 @@ async function main() {
 
   const urls = staticUrls.concat(eventUrls);
 
-  if (events.length === 0) {
-    throw new Error('No published events were returned; refusing to publish a sitemap without event URLs.');
+  if (eligibleEvents.length === 0) {
+    throw new Error('No SEO-eligible published events were returned; refusing to publish a sitemap without event URLs.');
   }
 
   const body = urls.map((item) => [
