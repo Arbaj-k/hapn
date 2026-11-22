@@ -127,7 +127,8 @@ function eventPageHtml(event) {
     gtag('config', 'G-EYVRV7CS7B');
   </script>
 <title>${title} – College Event | Hapn</title>
-<meta name="description" content="${metaDescription}">\n<meta name="robots" content="index, follow, max-image-preview:large">\n<link rel="canonical" href="${canonical}">
+<meta name="description" content="${metaDescription}">
+<meta name="robots" content="index, follow, max-image-preview:large">\n<link rel="canonical" href="${canonical}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Hapn">
 <meta property="og:title" content="${title} – College Event | Hapn">
