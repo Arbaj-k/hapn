@@ -14,6 +14,6 @@ assert.match(page, /does not automatically establish an official partnership/);
 assert.match(page, /collegeevent28@gmail\.com/);
 assert.match(page, /href="\/submit-event\/">/);
 assert.match(sitemap, /baseUrl \+ '\/campus-partners\/'/);
-assert.match(home, /href="\/campus-partners\/">/);
+assert.doesNotMatch(home, /href="\/campus-partners\/">/, 'homepage navigation should remain minimal');
 assert.match(submit, /href="\/campus-partners\/">/);
 console.log('[campus-partners] canonical, FAQs, honest claims, contact, internal links and sitemap passed');
