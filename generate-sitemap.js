@@ -128,7 +128,8 @@ function eventPageHtml(event) {
   </script>
 <title>${title} – College Event | Hapn</title>
 <meta name="description" content="${metaDescription}">
-<meta name="robots" content="index, follow, max-image-preview:large">\n<link rel="canonical" href="${canonical}">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="${canonical}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Hapn">
 <meta property="og:title" content="${title} – College Event | Hapn">
@@ -261,8 +262,10 @@ async function main() {
 
   fs.writeFileSync(
     'sitemap.xml',
-    '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-      body + '\n</urlset>\n'
+    '<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+      body + '
+</urlset>\n'
   );
 
   console.log('[sitemap] Generated ' + urls.length + ' URLs (' + events.length + ' published events).');
