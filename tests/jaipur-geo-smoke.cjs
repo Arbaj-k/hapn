@@ -15,6 +15,7 @@ assert.match(page, /does not claim to list every Jaipur college event/);
 assert.match(page, /not independent verification of every event claim/);
 assert.match(page, /href="\/submit-event\/">/);
 assert.match(sitemap, /baseUrl \+ '\/jaipur-college-events\/'/);
-assert.match(home, /href="\/jaipur-college-events\/">/);
+// Detailed local SEO guide is linked from the Events hub, not the compact primary navigation.
+assert.doesNotMatch(home, /href="\/jaipur-college-events\/">/, 'primary navigation should not include secondary location links');
 assert.match(events, /href="\/jaipur-college-events\/">/);
 console.log('[jaipur-geo] canonical, local entity schema, FAQ, honest coverage, sitemap and internal links passed');
