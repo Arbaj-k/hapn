@@ -29,6 +29,9 @@ jobs:
       - name: Run production hardening regression tests
         run: node tests/production-hardening-smoke.cjs
 
+      - name: Verify campus partners and organiser guide
+        run: node tests/campus-partners-smoke.cjs
+
       - name: Verify LLM brand knowledge and entity markup
         run: node tests/llmo-brand-knowledge-smoke.cjs
 
