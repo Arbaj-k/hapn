@@ -21,7 +21,7 @@ const event = {
 };
 
 assert.equal(eventSlug(event), 'jaipur-tech-innovation-fest-2026-15249dc1-49fe-42cf-9c18-fbe02d19b511');
-assert.equal(eventPath(event), '/event/jaipur-tech-innovation-fest-2026-15249dc1-49fe-42cf-9c18-fbe02d19b511/');
+assert.equal(eventPath(event), '/event/?id=15249dc1-49fe-42cf-9c18-fbe02d19b511');
 assert.equal(safeHttpsUrl('javascript:alert(1)'), null);
 assert.equal(isSeoEligibleEvent(event), true);
 assert.equal(isSeoEligibleEvent({ ...event, date: '' }), false);
@@ -31,7 +31,7 @@ assert.equal(isSeoEligibleEvent({ ...event, id: '' }), false);
 const html = eventPageHtml(event);
 assert.match(html, /<title>Jaipur Tech &amp; Innovation Fest 2026 – College Event \| Hapn<\/title>/);
 assert.match(html, /<h1>Jaipur Tech &amp; Innovation Fest 2026<\/h1>/);
-assert.match(html, /<link rel="canonical" href="https:\/\/hapn\.info\/event\/jaipur-tech-innovation-fest-2026-15249dc1-49fe-42cf-9c18-fbe02d19b511\/">/);
+assert.match(html, /<link rel="canonical" href="https:\/\/hapn\.info\/event\/\?id=15249dc1-49fe-42cf-9c18-fbe02d19b511">/);
 assert.match(html, /<meta name="description" content="A student technology festival/);
 assert.equal(html.includes('\\n<meta name="robots"'), false);
 assert.match(html, /"@type":"Event"/);
@@ -51,7 +51,7 @@ assert.match(pastHtml, /"eventStatus":"https:\/\/schema.org\/EventCompleted"/);
 
 const directory = eventDirectoryHtml([event]);
 assert.ok(directory.includes('<h1>College Events Directory</h1>'));
-assert.ok(directory.includes('https://hapn.info/event/jaipur-tech-innovation-fest-2026-15249dc1-49fe-42cf-9c18-fbe02d19b511/'));
+assert.ok(directory.includes('https://hapn.info/event/?id=15249dc1-49fe-42cf-9c18-fbe02d19b511'));
 assert.ok(directory.includes('<meta name="robots" content="index, follow'));
 assert.ok(directory.includes('1 published event listings'));
 
