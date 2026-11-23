@@ -349,7 +349,9 @@ async function main() {
   }
 
   const eligibleEvents = events.filter(isSeoEligibleEvent);
-  await generateEventPages(eligibleEvents);
+  // Every published event must have a working detail URL, even when its date
+  // is incomplete and it therefore cannot be included in the indexable sitemap.
+  await generateEventPages(events);
   generateEventDirectory(eligibleEvents);
 
   const skippedEvents = events.length - eligibleEvents.length;
