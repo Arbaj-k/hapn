@@ -374,14 +374,25 @@
         '<small>Opens the registration form in a new tab.</small>'
       : '<span class="btn btn-lg btn-disabled" aria-disabled="true">' + (status !== 'upcoming' ? 'This event has ended' : 'Registration closed') + '</span>';
 
+    // Treat empty values and literal "undefined"/"null" from older records as missing.
+    const cleanValue = (value) => {
+      const text = String(value == null ? '' : value).trim();
+      return !text || /^(undefined|null|n\/a)$/i.test(text) ? '' : text;
+    };
+    const date = cleanValue(ev.date);
+    const time = cleanValue(ev.time);
+    const venue = cleanValue(ev.venue);
+    const collegeName = cleanValue((state.colleges.find(col => col.id === ev.college_id) || {}).name);
+    const organizer = cleanValue(ev.organizer);
+    const deadline = cleanValue(ev.registration_deadline);
     const rows = [
-      ['DATE', CE.formatDate(ev.date) + (ev.end_date ? ' – ' + CE.formatDate(ev.end_date) : '')],
-      ['TIME', CE.formatTime(ev.time) + (ev.end_time ? ' – ' + CE.formatTime(ev.end_time) : '')],
-      ['VENUE', ev.venue || 'Venue to be announced'],
-      ['COLLEGE', (state.colleges.find(col => col.id === ev.college_id) || {}).name || 'College event'],
-      ['ORGANIZER', ev.organizer || 'College event']
-    ];
-    if (ev.registration_deadline) rows.push(['📝 Register by', CE.formatDate(ev.registration_deadline)]);
+      ['DATE', date ? CE.formatDate(date) + (cleanValue(ev.end_date) ? ' – ' + CE.formatDate(ev.end_date) : '') : ''],
+      ['TIME', time ? CE.formatTime(time) + (cleanValue(ev.end_time) ? ' – ' + CE.formatTime(ev.end_time) : '') : ''],
+      ['VENUE', venue],
+      ['COLLEGE', collegeName],
+      ['ORGANIZER', organizer],
+      ['📝 Register by', deadline ? CE.formatDate(deadline) : '']
+    ].filter((row) => cleanValue(row[1]));
 
     return '' +
       '<div class="detail">' +
@@ -390,14 +401,14 @@
           '<div class="detail-pills"><span class="pill">' + CE.esc(ev.category || 'College event') + '</span>' + (status !== 'upcoming' ? '<span class="pill pill-ended">Ended</span>' : (ev.date ? (function(){ const d=new Date(String(ev.date).slice(0,10)+'T00:00:00'); const t=new Date(); t.setHours(0,0,0,0); const n=Math.ceil((d-t)/86400000); return '<span class="pill pill-countdown">' + (n > 0 ? 'Starts in ' + n + (n===1?' day':' days') : (n===0?'Today':'Upcoming')) + '</span>'; })() : '')) + '</div>' +
           '<h1>' + CE.esc(ev.title) + '</h1>' +
           (ev.short_description ? '<p class="detail-subtitle">' + CE.esc(ev.short_description) + '</p>' : '') +
-          '<dl class="info-list">' + rows.map((r, i) => '<div><span class="info-icon" aria-hidden="true">' + ['▦','◷','⌖','♙'][i] + '</span><span class="info-copy"><dt>' + r[0] + '</dt><dd>' + CE.esc(r[1]) + '</dd></span></div>').join('') + '</dl>' +
+          '<dl class="info-list">' + rows.map((r) => '<div><span class="info-icon" aria-hidden="true">' + (r[0] === 'DATE' ? '▦' : r[0] === 'TIME' ? '◷' : r[0] === 'VENUE' ? '⌖' : r[0] === 'COLLEGE' ? '♙' : r[0] === 'ORGANIZER' ? '♙' : '📝') + '</span><span class="info-copy"><dt>' + r[0] + '</dt><dd>' + CE.esc(r[1]) + '</dd></span></div>').join('') + '</dl>' +
           '<div class="detail-quick-actions">' +
             '<a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(ev.title) + '&dates=' + encodeURIComponent(String(ev.date || '').replace(/-/g, '') + 'T' + String(ev.time || '00:00:00').replace(/:/g, '').slice(0,6).padEnd(6,'0') + '/' + String(ev.end_date || ev.date || '').replace(/-/g, '') + 'T' + String(ev.end_time || ev.time || '23:59:00').replace(/:/g, '').slice(0,6).padEnd(6,'0')) + '&details=' + encodeURIComponent(ev.description || ev.short_description || '') + '&location=' + encodeURIComponent(ev.venue || '') + '" target="_blank" rel="noopener noreferrer" class="detail-outline-btn">▦ &nbsp; Add to calendar</a>' +
             '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(ev.venue || ev.title) + '" target="_blank" rel="noopener noreferrer" class="detail-outline-btn">⌖ &nbsp; Get directions</a>' +
           '</div>' +
           '<h2 class="detail-text-title">About this event</h2>' +
           '<p class="detail-text">' + CE.esc(ev.description || ev.short_description || 'More event details will be announced soon.') + '</p>' +
-          (ev.organizer ? '<section class="detail-organizers"><h2 class="detail-text-title">Who’s organizing</h2><div class="organizer-card"><span class="organizer-avatar">' + CE.esc(String(ev.organizer).trim().charAt(0).toUpperCase()) + '</span><span class="organizer-copy"><strong>' + CE.esc(ev.organizer) + '</strong><small>Event organizer</small></span></div></section>' : '') +
+          (cleanValue(ev.organizer) ? '<section class="detail-organizers"><h2 class="detail-text-title">Who’s organizing</h2><div class="organizer-card"><span class="organizer-avatar">' + CE.esc(String(ev.organizer).trim().charAt(0).toUpperCase()) + '</span><span class="organizer-copy"><strong>' + CE.esc(ev.organizer) + '</strong><small>Event organizer</small></span></div></section>' : '') +
           '<div class="detail-cta">' + cta + '<button class="register-share-icon share-button" type="button" data-share-url="/event/?id=' + encodeURIComponent(ev.id) + '" data-share-title="' + CE.esc(ev.title) + ' – Hapn" data-share-image="' + CE.esc(CE.posterSrc(ev.poster_url)) + '" data-share-text="' + CE.esc('Check out ' + ev.title + ' on Hapn!') + '" aria-label="Share this event" title="Share event"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button></div>' +
         '</div>' +
       '</div>';
