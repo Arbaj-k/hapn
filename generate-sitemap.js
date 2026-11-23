@@ -78,8 +78,7 @@ function eventSlug(event) {
 }
 
 function eventPath(event) {
-  // Canonical, deployment-independent URL for every published event.
-  return '/event/?id=' + encodeURIComponent(String(event.id || '').toLowerCase());
+  return '/event/' + eventSlug(event) + '/';
 }
 function eventPageHtml(event) {
   const title = escapeHtml(event.title || 'College Event');
