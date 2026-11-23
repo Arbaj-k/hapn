@@ -18,16 +18,10 @@
 
   const byDateTime = (a, b) => (a.date + ' ' + (a.time || '')).localeCompare(b.date + ' ' + (b.time || ''));
 
+  // Use one permanent dynamic route so newly published events work immediately,
+  // without waiting for GitHub Pages to generate a title-based folder at build time.
   function eventPath(ev) {
-    const titleSlug = String(ev.title || 'college-event')
-      .normalize('NFKD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-      .slice(0, 64)
-      .replace(/-+$/g, '') || 'college-event';
-    return '/event/' + titleSlug + '-' + String(ev.id || '').toLowerCase() + '/';
+    return '/event/?id=' + encodeURIComponent(String(ev.id || '').toLowerCase());
   }
 
 
