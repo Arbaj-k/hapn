@@ -78,6 +78,15 @@
         </div>
 
         <div class="field full">
+          <label for="visibility_scope">Who can see this event?</label>
+          <select id="visibility_scope">
+            <option value="college" selected>Only my college</option>
+            <option value="all">All colleges</option>
+          </select>
+          <span class="hint">Only my college shows this event to students who selected your college. All colleges makes it visible to students across Hapn.</span>
+        </div>
+
+        <div class="field full">
           <span class="field-label">Categories</span>
           <div id="category-options" class="category-options">
             <label class="check"><input type="checkbox" name="event-category" value="Technical"> Technical</label>
