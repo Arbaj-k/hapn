@@ -185,6 +185,7 @@
       end_time: v('end_time') || null,
       is_featured: $('is_featured').checked,
       is_pinned: $('is_pinned').checked,
+      visibility_scope: $('visibility_scope').value === 'all' ? 'all' : 'college',
       venue: v('venue') || null,
       organizer: v('organizer') || null,
       category: Array.from(document.querySelectorAll('input[name="event-category"]:checked')).map((el) => el.value === 'Other' ? v('category_other') : el.value).filter(Boolean).join(', '),
@@ -236,6 +237,7 @@
     $('is_published').checked = ev.is_published !== false;
     $('is_featured').checked = ev.is_featured === true;
     $('is_pinned').checked = ev.is_pinned === true;
+    $('visibility_scope').value = ev.visibility_scope === 'all' ? 'all' : 'college';
     if (ev.poster_url) {
       $('poster-preview').src = CE.posterSrc(ev.poster_url);
       $('poster-preview').hidden = false;
