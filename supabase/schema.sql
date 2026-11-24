@@ -29,6 +29,7 @@ create table if not exists public.events (
   registration_deadline date,
   registration_link     text check (registration_link is null or registration_link ~* '^https://'),
   is_published          boolean not null default true,   -- false = hidden draft (admins only)
+  visibility_scope      text not null default 'college' check (visibility_scope in ('college', 'all')),
   created_at            timestamptz not null default now(),
   updated_at            timestamptz not null default now(),
   constraint deadline_not_after_event
