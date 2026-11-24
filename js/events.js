@@ -8,7 +8,7 @@
 
   const CE = window.CE;
   const publicDb = window.sbPublic || window.sb;
-  const LIST_COLUMNS = 'id,title,poster_url,date,time,end_date,end_time,venue,category,short_description,registration_deadline,registration_link,is_featured,is_pinned,college_id';
+  const LIST_COLUMNS = 'id,title,poster_url,date,time,end_date,end_time,venue,category,short_description,registration_deadline,registration_link,is_featured,is_pinned,college_id,visibility_scope';
   const state = { events: [], colleges: [], category: 'All', query: '', selectedDate: '', college: '' };
   let shareCareCache = { key: '', at: 0, data: null, error: false };
   let shareCarePending = null;
@@ -82,7 +82,7 @@
         const eventEnd = String(ev.end_date || ev.date || '');
         if (state.selectedDate < eventStart || state.selectedDate > eventEnd) return false;
       }
-      if (state.college && ev.college_id !== state.college) return false;
+      if (ev.visibility_scope !== 'all' && (!state.college || ev.college_id !== state.college)) return false;
       if (state.category !== 'All' && !String(ev.category || '').split(',').map((c) => c.trim()).includes(state.category)) return false;
       if (!q) return true;
       return [ev.title, ev.venue, ev.category].some((field) => String(field || '').toLowerCase().indexOf(q) !== -1);
@@ -145,7 +145,7 @@
       date.setDate(monday.getDate() + i);
       const key = iso(date);
       const hasEvents = state.events.some((ev) => {
-        if (state.college && ev.college_id !== state.college) return false;
+        if (ev.visibility_scope !== 'all' && (!state.college || ev.college_id !== state.college)) return false;
         const start = String(ev.date || '');
         const end = String(ev.end_date || ev.date || '');
         return key >= start && key <= end && CE.eventStatus(ev) === 'upcoming';
@@ -232,7 +232,7 @@
     const box = document.getElementById('next-up');
     if (!box) return;
     if (shareCareAutoTimer) { clearInterval(shareCareAutoTimer); shareCareAutoTimer = null; }
-    const upcoming = sortForDisplay(state.events).filter((e) => CE.eventStatus(e) === 'upcoming' && (!state.college || e.college_id === state.college));
+    const upcoming = sortForDisplay(state.events).filter((e) => CE.eventStatus(e) === 'upcoming' && (e.visibility_scope === 'all' || (state.college && e.college_id === state.college)));
     const picks = upcoming.slice().sort((a, b) => Number(Boolean(b.is_featured)) - Number(Boolean(a.is_featured)) || Number(Boolean(b.is_pinned)) - Number(Boolean(a.is_pinned)) || byDateTime(a, b));
     let preview = null, previewError = false, loading = false;
     const accountState = await (async()=>{try{const authDb=window.sb||window.sbPublic;const {data:{session}}=await authDb.auth.getSession();if(!session?.user)return {opened:false,collegeId:''};const {data,error}=await authDb.from('campus_members').select('college_id,sharencare_opened_at').eq('user_id',session.user.id).maybeSingle();return {opened:!error&&!!data?.sharencare_opened_at,collegeId:!error&&data?.college_id||''};}catch(_){return {opened:false,collegeId:''};}})();
@@ -425,6 +425,12 @@
     const { data, error } = await publicDb.from('events').select('*').eq('id', id).maybeSingle();
     if (error) { console.warn('Hapn event detail unavailable:', error.code || 'unknown'); return notFound('This event could not be loaded. Please try again.'); }
     if (!data) return notFound('Event not found.');
+
+    await (window.HapnCollegeSelection?.ready || Promise.resolve());
+    const selectedCollege = window.HapnCollegeSelection?.get?.() || '';
+    if (data.visibility_scope !== 'all' && (!selectedCollege || data.college_id !== selectedCollege)) {
+      return notFound('This event is only available to students from its college. Choose the matching college to view it.');
+    }
 
     document.title = data.title + ' – Hapn';
 
