@@ -1,7 +1,7 @@
 (function(){
 'use strict';
 const $=id=>document.getElementById(id),form=$('inbox-form'),status=$('inbox-status'),button=$('send-button');
-const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const params=new URLSearchParams(location.search),sourceType=['event_report','campus_post_report'].includes(params.get('source'))?params.get('source'):'message',sourceId=params.get('id')||null,sourceLabel=params.get('label')||'',esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function note(text,error){status.hidden=false;status.className='inbox-status'+(error?' error':'');status.textContent=text;}
 async function init(){
  if(!window.sb||!window.sbPublic){note(window.CE?.setupProblem?.()||'Hapn is temporarily unavailable. Please try again.',true);button.disabled=true;return;}
@@ -23,7 +23,7 @@ async function init(){
  form.addEventListener('submit',async e=>{
   e.preventDefault();button.disabled=true;button.textContent='Sending…';status.hidden=true;
   try{
-   const {data,error}=await sb.rpc('submit_hapn_inbox',{p_college_id:$('college').value,p_first_name:$('first-name').value.trim(),p_last_name:$('last-name').value.trim(),p_email:$('email').value.trim(),p_phone:$('phone').value.trim()||null,p_message:$('message').value.trim(),p_source_type:'message',p_source_id:null,p_source_label:null});
+   const {data,error}=await sb.rpc('submit_hapn_inbox',{p_college_id:$('college').value,p_first_name:$('first-name').value.trim(),p_last_name:$('last-name').value.trim(),p_email:$('email').value.trim(),p_phone:$('phone').value.trim()||null,p_message:$('message').value.trim(),p_source_type:sourceType,p_source_id:sourceId,p_source_label:sourceLabel||null});
    if(error)throw error;
    form.reset();$('college').value='';note('Your message has been sent. Thank you for contacting Hapn.');window.scrollTo({top:0,behavior:'smooth'});
   }catch(err){note(err.message||'Could not send your message. Please try again.',true);}
