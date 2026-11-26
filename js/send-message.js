@@ -13,7 +13,7 @@ async function init(){
  if(user){
    const {data:m}=await sb.from('campus_members').select('full_name,email,college_id').eq('user_id',user.id).maybeSingle();
    const full=(m?.full_name||user.user_metadata?.full_name||user.user_metadata?.name||'').trim().split(/\s+/);
-   if(full[0])$('first-name').value=full.shift();
+   if(!full[0]){const {data:profile}=await sb.from('profiles').select('full_name,college_id,email').eq('user_id',user.id).maybeSingle();if(profile?.full_name)full.push(...profile.full_name.trim().split(/\\s+/));if(profile?.college_id)$('college').value=profile.college_id;}\n   if(full[0])$('first-name').value=full.shift();
    if(full.length)$('last-name').value=full.join(' ');
    $('email').value=m?.email||user.email||'';
    if(m?.college_id)$('college').value=m.college_id;
