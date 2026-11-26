@@ -3,7 +3,8 @@
 const $=id=>document.getElementById(id),form=$('inbox-form'),status=$('inbox-status'),button=$('send-button');
 const params=new URLSearchParams(location.search),sourceType=['event_report','campus_post_report'].includes(params.get('source'))?params.get('source'):'message',sourceId=params.get('id')||null,sourceLabel=params.get('label')||'',esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function note(text,error){status.hidden=false;status.className='inbox-status'+(error?' error':'');status.textContent=text;}
-if(sourceType==='event_report')$('form-lead').textContent='Report an incorrect, outdated or concerning detail about this Hapn event. Your report will be sent to the relevant college administrator.';\nasync function init(){
+if(sourceType==='event_report')$('form-lead').textContent='Report an incorrect, outdated or concerning detail about this Hapn event. Your report will be sent to the relevant college administrator.';
+async function init(){
  if(!window.sb||!window.sbPublic){note(window.CE?.setupProblem?.()||'Hapn is temporarily unavailable. Please try again.',true);button.disabled=true;return;}
  let colleges,error;({data:colleges,error}=await sbPublic.from('colleges').select('id,name').eq('is_active',true).order('name'));
  if(error||!colleges?.length){$('college').innerHTML='<option value="">College list unavailable</option>';note('We could not load the college list. Please refresh and try again.',true);button.disabled=true;return;}
