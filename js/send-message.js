@@ -3,12 +3,12 @@
 const $=id=>document.getElementById(id),form=$('inbox-form'),status=$('inbox-status'),button=$('send-button');
 const params=new URLSearchParams(location.search),sourceType=['event_report','campus_post_report'].includes(params.get('source'))?params.get('source'):'message',sourceId=params.get('id')||null,sourceLabel=params.get('label')||'',esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function note(text,error){status.hidden=false;status.className='inbox-status'+(error?' error':'');status.textContent=text;}
-async function init(){
+if(sourceType==='event_report')$('form-lead').textContent='Report an incorrect, outdated or concerning detail about this Hapn event. Your report will be sent to the relevant college administrator.';\nasync function init(){
  if(!window.sb||!window.sbPublic){note(window.CE?.setupProblem?.()||'Hapn is temporarily unavailable. Please try again.',true);button.disabled=true;return;}
  let colleges,error;({data:colleges,error}=await sbPublic.from('colleges').select('id,name').eq('is_active',true).order('name'));
  if(error||!colleges?.length){$('college').innerHTML='<option value="">College list unavailable</option>';note('We could not load the college list. Please refresh and try again.',true);button.disabled=true;return;}
  $('college').innerHTML='<option value="">Choose your college</option>'+colleges.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>').join('');
- try{const saved=localStorage.getItem('hapn_selected_college_id');if(saved&&colleges.some(c=>c.id===saved))$('college').value=saved;}catch(_){}
+ try{const requested=params.get('college'),saved=localStorage.getItem('hapn_selected_college_id');if(requested&&colleges.some(c=>c.id===requested))$('college').value=requested;else if(saved&&colleges.some(c=>c.id===saved))$('college').value=saved;}catch(_){}
  const {data:{user}}=await sb.auth.getUser().catch(()=>({data:{user:null}}));
  if(user){
    const {data:m}=await sb.from('campus_members').select('full_name,email,college_id').eq('user_id',user.id).maybeSingle();
