@@ -343,6 +343,8 @@ function Sidebar() {
 }
 function MobileHeader() {
   const dark = theme() === 'dark';
+  if(S.publicMode) return `<div style="display:flex;align-items:baseline;gap:10px"><div class="logo" style="padding:0">hapn</div><span class="eyebrow" style="font-size:10px">SHARE N CARE</span></div>
+    <div class="r"><button class="btn sm" data-act="login">Sign in</button><button class="icon-btn" data-act="theme" aria-label="Toggle theme">${ic(dark ? 'sun' : 'moon')}</button></div>`;
   return `<div style="display:flex;align-items:baseline;gap:10px"><div class="logo" style="padding:0">hapn</div><span class="eyebrow" style="font-size:10px">SHARE N CARE</span></div>
     <div class="r">
       <a class="icon-btn" href="/connect/notifications/" aria-label="Notifications" style="display:grid;place-items:center;text-decoration:none;position:relative">${ic('bell')}${unread() ? `<span class="badge">${unread()}</span>` : ''}</a><button class="icon-btn" data-go="guidelines" aria-label="Guidelines">${ic('book')}</button>
