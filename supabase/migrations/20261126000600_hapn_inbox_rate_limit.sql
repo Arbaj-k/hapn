@@ -8,8 +8,8 @@ declare v_id uuid; v_uid uuid := auth.uid(); v_college uuid := p_college_id; v_r
 begin
  if length(trim(coalesce(p_first_name,''))) not between 1 and 60 then raise exception 'Enter your first name.'; end if;
  if length(trim(coalesce(p_last_name,''))) not between 1 and 60 then raise exception 'Enter your last name.'; end if;
- if length(trim(coalesce(p_email,''))) not between 5 and 254 or trim(p_email) !~* '^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$' then raise exception 'Enter a valid email address.'; end if;
- if coalesce(p_phone,'')<>'' and p_phone !~ '^\\+?[0-9][0-9 -]{6,20}$' then raise exception 'Enter a valid phone number.'; end if;
+ if length(trim(coalesce(p_email,''))) not between 5 and 254 or trim(p_email) !~* '^[A-Z0-9._%+-]+@[A-Z0-9.-]+[.][A-Z]{2,}$' then raise exception 'Enter a valid email address.'; end if;
+ if coalesce(p_phone,'')<>'' and p_phone !~ '^[+]?[0-9][0-9 -]{6,20}$' then raise exception 'Enter a valid phone number.'; end if;
  if length(trim(coalesce(p_message,''))) not between 5 and 5000 then raise exception 'Message must contain 5 to 5000 characters.'; end if;
  if p_source_type not in ('message','event_report','campus_post_report') then raise exception 'Invalid message type.'; end if;
  if v_college is not null and not exists(select 1 from public.colleges c where c.id=v_college and c.is_active) then raise exception 'Choose an active college.'; end if;
