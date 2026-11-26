@@ -404,6 +404,7 @@
           '<p class="detail-text">' + CE.esc(ev.description || ev.short_description || 'More event details will be announced soon.') + '</p>' +
           (cleanValue(ev.organizer) ? '<section class="detail-organizers"><h2 class="detail-text-title">Who’s organizing</h2><div class="organizer-card"><span class="organizer-avatar">' + CE.esc(String(ev.organizer).trim().charAt(0).toUpperCase()) + '</span><span class="organizer-copy"><strong>' + CE.esc(ev.organizer) + '</strong><small>Event organizer</small></span></div></section>' : '') +
           '<div class="detail-cta">' + cta + '<button class="register-share-icon share-button" type="button" data-share-url="/event/?id=' + encodeURIComponent(ev.id) + '" data-share-title="' + CE.esc(ev.title) + ' – Hapn" data-share-image="' + CE.esc(CE.posterSrc(ev.poster_url)) + '" data-share-text="' + CE.esc('Check out ' + ev.title + ' on Hapn!') + '" aria-label="Share this event" title="Share event"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button></div>' +
+          '<p class="event-report-link"><a class="detail-outline-btn" href="/send-message/?source=event_report&id=' + encodeURIComponent(ev.id) + '&college=' + encodeURIComponent(ev.college_id || '') + '&label=' + encodeURIComponent(ev.title) + '">Report an issue with this event</a></p>' +
         '</div>' +
       '</div>';
   }
