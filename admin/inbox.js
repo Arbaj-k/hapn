@@ -25,6 +25,10 @@ async function load(){
  rows=data||[];render();
 }
 function render(){
+ $('stat-total').textContent=rows.length;
+ $('stat-new').textContent=rows.filter(r=>r.status==='new').length;
+ $('stat-review').textContent=rows.filter(r=>r.status==='in_review').length;
+ $('stat-resolved').textContent=rows.filter(r=>r.status==='resolved').length;
  const status=$('status-filter').value,type=$('type-filter').value,term=$('search-filter').value.trim().toLowerCase();
  const list=rows.filter(r=>(!status||r.status===status)&&(!type||r.source_type===type)&&(!term||[r.first_name,r.last_name,r.email,r.message,r.source_label,collegeNames[r.college_id]].join(' ').toLowerCase().includes(term)));
  $('inbox-count').textContent=list.length+' item'+(list.length===1?'':'s');
@@ -32,7 +36,7 @@ function render(){
   const isChat=r.source_type==='chat_report'||r.source_type==='private_chat_report';
   const label=r.source_type.replaceAll('_',' ');
   return '<article class="inbox-item" data-id="'+r.id+'"><div class="page-title-row"><h3>'+esc(isChat?'Chat moderation report':r.first_name+' '+r.last_name)+'</h3><span class="status">'+esc(r.status.replace('_',' '))+'</span></div><p class="inbox-meta">'+esc(isChat?'Reported by a chat participant':r.email+(r.phone?' · '+r.phone:''))+' · '+esc(collegeNames[r.college_id]||'Platform-wide / unassigned')+' · '+new Date(r.created_at).toLocaleString()+'</p><p class="inbox-meta"><b>'+esc(label)+'</b>'+(r.source_label?' · '+esc(r.source_label):'')+'</p>'+(isChat?'<p class="privacy-note">Only the message explicitly reported by a user is shown here. The rest of the private conversation is not accessible to moderators.</p>':'')+'<div class="inbox-message">'+esc(r.message)+'</div><label for="reply-'+r.id+'">Admin response / internal note</label><textarea class="inbox-reply" id="reply-'+r.id+'" maxlength="5000" placeholder="Write an internal note…">'+esc(r.admin_reply||'')+'</textarea><div class="inbox-actions"><select data-status="'+r.id+'"><option value="new" '+(r.status==='new'?'selected':'')+'>New</option><option value="in_review" '+(r.status==='in_review'?'selected':'')+'>In review</option><option value="replied" '+(r.status==='replied'?'selected':'')+'>Replied</option><option value="resolved" '+(r.status==='resolved'?'selected':'')+'>Resolved</option></select><button class="btn btn-primary btn-sm" data-save="'+r.id+'">Save note & status</button></div></article>';
- }).join(''):'<div class="inbox-empty">No items match these filters.</div>';
+ }).join(''):'<div class="inbox-empty"><div class="inbox-empty-icon">✉</div><strong>No matching items</strong>Try another category or clear your search filters.</div>';
 }
 async function actions(e){
  const btn=e.target.closest('[data-save]');if(!btn)return;
