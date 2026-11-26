@@ -661,7 +661,7 @@ async function load() {
   }
   S.loading = false; render();
   const params=new URLSearchParams(location.search);
-  if(params.get('create')==='1') setTimeout(()=>PostModal(),80);
+  if(params.get('create')==='1') setTimeout(()=>S.publicMode?requireCampusLogin():PostModal(),80);
   const target=params.get('post');
   if(target&&/^[0-9a-f-]{36}$/i.test(target)) setTimeout(()=>{const el=document.getElementById('campus-post-'+target);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.style.outline='2px solid #c8f26b';}},120);
 }
