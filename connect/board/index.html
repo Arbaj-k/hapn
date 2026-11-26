@@ -191,7 +191,7 @@ textarea{resize:vertical;min-height:130px;font-size:16px}
 }
 @media (prefers-reduced-motion:no-preference){.nav-item,.btn,.chip,.tile{transition:background .12s,color .12s,border-color .12s,opacity .12s}}
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/js/config.js"></script><script src="/js/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/js/config.js"></script><script src="/js/supabase.js"></script><script src="/js/college-selection.js?v=20261114sharedcollege1"></script>
 </head>
 <body>
 <aside class="sidebar" id="sidebar"></aside>
@@ -294,7 +294,7 @@ const api={
 /* =========================================================
    STATE
    ========================================================= */
-const S = Object.assign(window.__CAMPUS_STATE__||{}, {view:'home',q:'',type:'All',posts:null,error:'',loading:true,me:null,notifTick:0,savedIds:[],reportedIds:[],requests:[],notifications:[],contactPhones:{},colleges:[],selectedCollegeId:localStorage.getItem('hapn-share-college')||''});window.__CAMPUS_STATE__=S;
+const S = Object.assign(window.__CAMPUS_STATE__||{}, {view:'home',q:'',type:'All',posts:null,error:'',loading:true,me:null,notifTick:0,savedIds:[],reportedIds:[],requests:[],notifications:[],contactPhones:{},colleges:[],selectedCollegeId:''});window.__CAMPUS_STATE__=S;
 const NAV = [['home', 'Home', 'home'], ['explore', 'Explore', 'explore'], ['mine', 'My Posts', 'posts'], ['saved', 'Saved', 'bookmark'], ['notifs', 'Notifications', 'bell']];
 const NAV_BOTTOM = [['guidelines', 'Guidelines', 'book'], ['settings', 'Settings', 'settings'], ['help', 'Help & Support', 'help']];
 
@@ -367,7 +367,7 @@ function MobileNav() {
     b('saved', 'Saved', 'bookmark') + b('notifs', 'Alerts', 'bell');
 }
 function PageHead(eyebrow, title, sub, withActions) {
-  const collegePicker = S.publicMode ? `<div class="field" style="max-width:420px;margin-top:16px"><label for="publicCollege">Choose your college</label><select class="select" id="publicCollege"><option value="">Select college to view its posts</option>${(S.colleges||[]).map(x=>`<option value="${esc(x.id)}" ${x.id===S.selectedCollegeId?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div>` : '';
+  const collegePicker = S.publicMode && !S.selectedCollegeId ? `<p class="sub" style="margin-top:14px">Please choose your college on the Hapn homepage first. <a href="/">Choose college</a></p>` : (S.publicMode && S.selectedCollegeName ? `<p class="sub" style="margin-top:8px">Showing posts for ${esc(S.selectedCollegeName)}</p>` : '');
   return `<div class="eyebrow">${eyebrow}</div><h1>${title}</h1><p class="sub">${sub}</p>${collegePicker}` + (withActions ? `
     <div class="toolbar">
       <label class="search">${ic('search')}<input id="q" type="search" placeholder="Search anything around your campus..." value="${esc(S.q)}" aria-label="Search posts"></label>
@@ -651,10 +651,13 @@ function render(keepFocus) {
   if (had) { const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); }
 }
 async function load() {
-  S.loading = true; S.error = ''; S.member = null; S.me = null; S.publicMode = false; DB = window.sb; render();
+  S.loading = true;
+  try { await (window.HapnCollegeSelection?.ready || Promise.resolve()); } catch (_) {}
+  S.selectedCollegeId = window.HapnCollegeSelection?.get?.() || '';
+  S.selectedCollegeName = window.HapnCollegeSelection?.getName?.() || ''; S.error = ''; S.member = null; S.me = null; S.publicMode = false; DB = window.sb; render();
   try {
     S.me = await api.me();
-    if(!S.me){S.publicMode=true;DB=window.sbPublic;const {data:colleges,error:collegeError}=await DB.rpc('get_public_campus_board_colleges');if(collegeError)dbError(collegeError);S.colleges=colleges||[];if(!S.colleges.some(x=>x.id===S.selectedCollegeId))S.selectedCollegeId='';}
+    if(!S.me){S.publicMode=true;DB=window.sbPublic;S.selectedCollegeId=window.HapnCollegeSelection?.get?.()||'';S.selectedCollegeName=window.HapnCollegeSelection?.getName?.()||'';}
     else {try { await DB.rpc('mark_sharencare_opened'); } catch (e) { console.warn('Could not record Share N Care open state:',e); }}
     S.posts = await api.listPosts();
   }
@@ -724,7 +727,7 @@ document.addEventListener('input', (e) => {
   if (e.target.id === 'q') { S.q = e.target.value; render(); }
 });
 document.addEventListener('change', async (e) => {
-  if(e.target.id==='publicCollege'){S.selectedCollegeId=e.target.value;try{localStorage.setItem('hapn-share-college',S.selectedCollegeId);}catch(_){}S.loading=true;render();try{S.posts=await api.listPosts();S.error='';}catch(err){S.error=err.message||'Could not load this college feed.';}S.loading=false;render();return;}
+  
   if (e.target.id === 'file' && e.target.files[0]) {
     try { draft.image = await shrinkImage(e.target.files[0]); $('#imgPrev').innerHTML = ImgPreview(); $('#perr').textContent = ''; }
     catch (err) { $('#perr').textContent = err.message; }
