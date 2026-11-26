@@ -367,4 +367,10 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initHapnNotifications, { once: true });
   else initHapnNotifications();
 
+  /* Load the student bell on pages using the shared site header. */
+  const studentBell = document.createElement('script');
+  studentBell.src = '/js/student-notifications.js?v=20261126bell1';
+  studentBell.defer = true;
+  document.head.appendChild(studentBell);
+
 })();
