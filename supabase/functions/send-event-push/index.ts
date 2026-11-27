@@ -45,10 +45,17 @@ Deno.serve(async (req: Request) => {
     if (authError || !authData.user) return json({ error: "Invalid session" }, 401);
 
     const adminClient = createClient(supabaseUrl, serviceRoleKey, { auth: { persistSession: false, autoRefreshToken: false } });
-    const { data: adminRow, error: adminError } = await adminClient
-      .from("admins").select("user_id,role").eq("user_id", authData.user.id).eq("role", "admin").maybeSingle();
-    if (adminError) return fail("admin_authorization_lookup_failed");
-    if (!adminRow) return json({ error: "Admin access required" }, 403);
+    const { data: profile, error: profileError } = await adminClient.from("profiles")
+      .select("role,is_active,college_id").eq("user_id", authData.user.id).maybeSingle();
+    if (profileError) return fail("admin_authorization_lookup_failed");
+    const { data: legacyAdmin, error: legacyError } = profile
+      ? { data: null, error: null }
+      : await adminClient.from("admins").select("user_id,role").eq("user_id", authData.user.id).eq("role", "admin").maybeSingle();
+    if (legacyError) return fail("legacy_admin_authorization_lookup_failed");
+    const isSuperAdmin = profile?.role === "super_admin" && profile.is_active === true;
+    const isCollegeAdmin = profile?.role === "college_admin" && profile.is_active === true && !!profile.college_id;
+    const isLegacyAdmin = !!legacyAdmin;
+    if (!isSuperAdmin && !isCollegeAdmin && !isLegacyAdmin) return json({ error: "Admin access required" }, 403);
 
     let body: Record<string, unknown>;
     try {
@@ -85,6 +92,7 @@ Deno.serve(async (req: Request) => {
         if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(collegeId)) {
           return json({ error: "Choose a valid college." }, 400);
         }
+        if (isCollegeAdmin && profile.college_id !== collegeId) return json({ error: "You can only notify your assigned college." }, 403);
         const { data: college, error: collegeError } = await adminClient.from("colleges")
           .select("id,name,is_active").eq("id", collegeId).eq("is_active", true).maybeSingle();
         if (collegeError) return fail("college_lookup_failed");
@@ -100,7 +108,6 @@ Deno.serve(async (req: Request) => {
         }
         recipientCount = ids.length;
         if (!ids.length) return json({ sent: false, recipients: 0, message: "No eligible campus members were found." });
-        payload.include_aliases = { external_id: ids };
         // Also create an in-app notification for members of this college.
         for (let offset = 0; offset < ids.length; offset += 500) {
           const rows = ids.slice(offset, offset + 500).map(user_id => ({
@@ -112,15 +119,30 @@ Deno.serve(async (req: Request) => {
         }
       }
 
+      if (audience === "college") {
+        // OneSignal's External ID alias endpoint accepts at most 2,000 IDs per request.
+        const ids = (payload.include_aliases as { external_id: string[] }).external_id;
+        const notificationIds: string[] = [];
+        for (let offset = 0; offset < ids.length; offset += 2000) {
+          const response = await fetch("https://api.onesignal.com/notifications", {
+            method: "POST",
+            headers: { "Authorization": "Key " + oneSignalKey, "Content-Type": "application/json" },
+            body: JSON.stringify({ ...payload, include_aliases: { external_id: ids.slice(offset, offset + 2000) } }),
+            signal: AbortSignal.timeout(10000),
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok || !result.id) return fail("onesignal_delivery_failed", 502);
+          notificationIds.push(result.id);
+        }
+        return json({ sent: true, recipients: recipientCount, batches: notificationIds.length, id: notificationIds[0] || null });
+      }
       const response = await fetch("https://api.onesignal.com/notifications", {
-        method: "POST",
-        headers: { "Authorization": "Key " + oneSignalKey, "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-        signal: AbortSignal.timeout(10000),
+        method: "POST", headers: { "Authorization": "Key " + oneSignalKey, "Content-Type": "application/json" },
+        body: JSON.stringify(payload), signal: AbortSignal.timeout(10000),
       });
       const result = await response.json().catch(() => ({}));
-      if (!response.ok) return fail("onesignal_delivery_failed", 502);
-      return json({ sent: true, recipients: recipientCount, id: typeof result.id === "string" ? result.id : null });
+      if (!response.ok || !result.id) return fail("onesignal_delivery_failed", 502);
+      return json({ sent: true, recipients: recipientCount, id: result.id });
     }
 
     // Existing automatic event-notification path.
