@@ -108,6 +108,7 @@ Deno.serve(async (req: Request) => {
         }
         recipientCount = ids.length;
         if (!ids.length) return json({ sent: false, recipients: 0, message: "No eligible campus members were found." });
+        payload.include_aliases = { external_id: ids };
         // Also create an in-app notification for members of this college.
         for (let offset = 0; offset < ids.length; offset += 500) {
           const rows = ids.slice(offset, offset + 500).map(user_id => ({
