@@ -329,7 +329,7 @@ const unread = () => api.notifs().filter(n => !n.read).length;
 function Sidebar() {
   const u = unread(), dark = theme() === 'dark';
   if(S.publicMode) return `
-    <div class="brand"><div class="logo" style="padding:0">hapn</div><span class="status"><span class="dot"></span>Public preview</span></div>
+    <div class="brand"><a class="logo" href="/" aria-label="Go to Hapn home" style="padding:0;text-decoration:none;color:inherit">hapn</a><span class="status"><span class="dot"></span>Public preview</span></div>
     <div class="eyebrow" style="padding:14px 10px 0;font-size:11px">${MARKET_MODE ? 'HAPNX MARKETPLACE' : 'SHARE N CARE'}</div>
     <nav class="nav" aria-label="Main">
       <button class="nav-item active" data-go="home">${ic('home')}<span>Home</span></button>
@@ -341,7 +341,7 @@ function Sidebar() {
 
   const item = ([id, label, icon]) => `<button class="nav-item ${S.view === id ? 'active' : ''}" data-go="${id}" ${S.view === id ? 'aria-current="page"' : ''}>${ic(icon)}<span>${label}</span>${id === 'notifs' && u ? `<span class="badge">${u}</span>` : ''}</button>`;
   return `
-    <div class="brand"><div class="logo" style="padding:0">hapn</div><span class="status"><span class="dot"></span>${esc(S.me?.college || 'Campus')} live</span></div>
+    <div class="brand"><a class="logo" href="/" aria-label="Go to Hapn home" style="padding:0;text-decoration:none;color:inherit">hapn</a><span class="status"><span class="dot"></span>${esc(S.me?.college || 'Campus')} live</span></div>
     <div class="eyebrow" style="padding:14px 10px 0;font-size:11px">SHARE N CARE</div><a class="nav-item" href="/connect/notifications/" style="text-decoration:none">${ic('bell')}<span>Notifications page</span>${u ? `<span class="badge">${u}</span>` : ''} </a>
     <nav class="nav" aria-label="Main">${NAV.map(item).join('')}</nav>
     <nav class="nav nav-bottom" aria-label="Secondary">
@@ -352,9 +352,9 @@ function Sidebar() {
 }
 function MobileHeader() {
   const dark = theme() === 'dark';
-  if(S.publicMode) return `<div style="display:flex;align-items:baseline;gap:10px"><div class="logo" style="padding:0">hapn</div><span class="eyebrow" style="font-size:10px">SHARE N CARE</span></div>
+  if(S.publicMode) return `<div style="display:flex;align-items:baseline;gap:10px"><a class="logo" href="/" aria-label="Go to Hapn home" style="padding:0;text-decoration:none;color:inherit">hapn</a><span class="eyebrow" style="font-size:10px">SHARE N CARE</span></div>
     <div class="r"><button class="btn sm" data-act="login">Sign in</button><button class="icon-btn" data-act="theme" aria-label="Toggle theme">${ic(dark ? 'sun' : 'moon')}</button></div>`;
-  return `<div style="display:flex;align-items:baseline;gap:10px"><div class="logo" style="padding:0">hapn</div><span class="eyebrow" style="font-size:10px">SHARE N CARE</span></div>
+  return `<div style="display:flex;align-items:baseline;gap:10px"><a class="logo" href="/" aria-label="Go to Hapn home" style="padding:0;text-decoration:none;color:inherit">hapn</a><span class="eyebrow" style="font-size:10px">SHARE N CARE</span></div>
     <div class="r">
       <a class="icon-btn" href="/connect/notifications/" aria-label="Notifications" style="display:grid;place-items:center;text-decoration:none;position:relative">${ic('bell')}${unread() ? `<span class="badge">${unread()}</span>` : ''}</a><button class="icon-btn" data-go="guidelines" aria-label="Guidelines">${ic('book')}</button>
       <button class="icon-btn" data-act="theme" aria-label="Toggle theme">${ic(dark ? 'sun' : 'moon')}</button>
