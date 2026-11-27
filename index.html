@@ -80,54 +80,27 @@
   <div class="diwali-bg"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="site-header hapn-app-header">
+  <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="/" aria-label="Hapn home">
+      <a class="brand" href="/">
         <img src="assets/images/logo.svg" alt="" width="34" height="34">
         <span>Hapn</span>
       </a>
-      <nav class="hapn-top-tabs" aria-label="Primary">
-        <a class="top-tab is-active" href="/events/" aria-current="page">Explore</a>
-        <a class="top-tab" href="/chat/" aria-label="Anonymous Chat">Anonchat</a>
-        <a class="top-tab" href="/hapnx/">HapnX</a>
+      <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">☰</button>
+      <nav class="nav" id="site-nav" aria-label="Main">
+        <a href="/events/" aria-current="page">Explore</a>
+        <a href="/chat/" aria-label="Anonymous Chat">Anonchat</a>
+        <a href="/hapnx/">HapnX</a>
+        <a class="mobile-primary-link" href="/">Home</a>
+        <a class="mobile-primary-link" href="/chat/" aria-label="Anonymous Chat">Anonchat</a>
+        <a class="mobile-primary-link" href="/hapnx/">HapnX</a>
+        <a class="mobile-primary-link" href="/hapn-connect/">Hapn Connect</a>
+        <a class="mobile-primary-link" href="/submit-event/">Share an Event</a>
+        <a class="mobile-primary-link" href="/send-message/">Send Message</a>
       </nav>
-      <nav class="nav" id="site-nav" aria-label="More navigation">
-        <div class="nav-extra">
-          <a href="/">Home</a>
-          <a href="/events/">All Events</a>
-          <a href="/hapn-connect/">Hapn Connect</a>
-          <a href="/submit-event/">Share an Event</a>
-          <a href="/send-message/">Send Message</a>
-          <a href="/help/">Help</a>
-          <a href="/terms/">Terms</a>
-        </div>
-      </nav>
-      <div class="header-tools">
-        <label class="header-search" for="header-search-input">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
-          <input id="header-search-input" type="search" placeholder="Search events..." autocomplete="off" aria-label="Search events">
-        </label>
-        <a class="header-icon-link" href="/events/" aria-label="Browse all events" title="Events">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 10h18"></path></svg>
-        </a>
-        <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav" title="More navigation">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
-        </button>
-      </div>
     </div>
-    <section class="college-preference-bar" aria-label="Your college preference">
-      <div class="container">
-        <div class="college-preference-copy">
-          <span class="college-selector-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m2 9 10-5 10 5-10 5L2 9Z"></path><path d="M6 11v5c3.5 3 8.5 3 12 0v-5M22 9v6"></path></svg> Your college</span>
-          <span id="college-preference-status">Choose once — Hapn will remember it on this device.</span>
-        </div>
-        <label class="visually-hidden" for="college-filter">Choose your college</label>
-        <select id="college-filter" data-college-selector aria-label="Choose your college">
-          <option value="">Loading colleges…</option>
-        </select>
-      </div>
-    </section>
   </header>
+<section class="college-preference-bar" aria-label="Your college preference"><div class="container"><div class="college-preference-copy"><strong>Your college</strong><span id="college-preference-status">Choose once — Hapn will remember it on this device.</span></div><label class="visually-hidden" for="college-filter">Choose your college</label><select id="college-filter" data-college-selector aria-label="Choose your college"><option value="">Loading colleges…</option></select></div></section>
 
   <main id="main">
     <section class="hero">
