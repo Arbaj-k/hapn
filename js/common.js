@@ -367,6 +367,34 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initHapnNotifications, { once: true });
   else initHapnNotifications();
 
+  /* Link signed-in Supabase users to OneSignal External IDs for targeted campus pushes. */
+  (function bindOneSignalIdentity() {
+    const db = window.sb;
+    if (!db || !db.auth || typeof db.auth.onAuthStateChange !== 'function') return;
+    let activeExternalId = null;
+    let identityQueue = Promise.resolve();
+    const syncIdentity = (OneSignal, session) => {
+      identityQueue = identityQueue.then(async () => {
+        const nextId = session && session.user && session.user.id ? session.user.id : null;
+        if (nextId === activeExternalId) return;
+        if (nextId) {
+          await OneSignal.login(nextId);
+          activeExternalId = nextId;
+        } else if (activeExternalId) {
+          await OneSignal.logout();
+          activeExternalId = null;
+        }
+      }).catch((error) => console.warn('Hapn notification identity sync failed.', error && error.message ? error.message : 'unknown'));
+      return identityQueue;
+    };
+    const applySession = (session) => {
+      const ready = window.HapnOneSignalReady;
+      if (ready && typeof ready.then === 'function') ready.then((OneSignal) => syncIdentity(OneSignal, session)).catch(() => {});
+    };
+    db.auth.onAuthStateChange((_event, session) => applySession(session));
+    db.auth.getSession().then(({ data }) => applySession(data && data.session)).catch(() => {});
+  })();
+
   /* Load the student bell on pages using the shared site header. */
   const studentBell = document.createElement('script');
   studentBell.src = '/js/student-notifications.js?v=20261126bell1';
