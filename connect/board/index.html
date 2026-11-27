@@ -260,6 +260,7 @@ const shortDate = (ts) => new Date(ts).toLocaleDateString(undefined, { day: 'num
 const isLive = (p) => !p.expiresAt || p.expiresAt > Date.now();
 const typeLabel = (p) => (p.type === 'Other' && p.customType) ? p.customType : p.type;
 const ALL_TYPES = [...TYPES.slice(0, 3), TEAM, GIVE, ...TYPES.slice(3)];
+const MARKET_MODE = new URLSearchParams(location.search).get('marketplace') === '1';
 
 /* =========================================================
    DATA LAYER
@@ -294,7 +295,7 @@ const api={
 /* =========================================================
    STATE
    ========================================================= */
-const S = Object.assign(window.__CAMPUS_STATE__||{}, {view:'home',q:'',type:'All',posts:null,error:'',loading:true,me:null,notifTick:0,savedIds:[],reportedIds:[],requests:[],notifications:[],contactPhones:{},colleges:[],selectedCollegeId:''});window.__CAMPUS_STATE__=S;
+const S = Object.assign(window.__CAMPUS_STATE__||{}, {view:'home',q:'',type:MARKET_MODE?'Buy / Sell':'All',posts:null,error:'',loading:true,me:null,notifTick:0,savedIds:[],reportedIds:[],requests:[],notifications:[],contactPhones:{},colleges:[],selectedCollegeId:''});window.__CAMPUS_STATE__=S;
 const NAV = [['home', 'Home', 'home'], ['explore', 'Explore', 'explore'], ['mine', 'My Posts', 'posts'], ['saved', 'Saved', 'bookmark'], ['notifs', 'Notifications', 'bell']];
 const NAV_BOTTOM = [['guidelines', 'Guidelines', 'book'], ['settings', 'Settings', 'settings'], ['help', 'Help & Support', 'help']];
 
@@ -470,8 +471,8 @@ function FeedBlock(list, emptyTitle, emptyText, showCta) {
 const V = {
   home() {
     const list = filtered((S.posts || []).filter(p => p.status !== 'hidden' && isLive(p)));
-    return PageHead('CAMPUS COMMUNITY', 'Campus Board.', 'Everything happening around your campus, in one place.', true) + (S.publicMode ? '<div class="ack" style="margin:14px 0">Public preview · Choose your college to browse its posts. Sign in with your official college email to connect, save or publish.</div>' : '') + Chips() +
-      FeedBlock(list, 'Nothing here yet', S.q || S.type !== 'All' ? 'No posts match your search or filter.' : 'Be the first to post something for your campus.', true);
+    return PageHead(MARKET_MODE ? 'HAPNX MARKETPLACE' : 'CAMPUS COMMUNITY', MARKET_MODE ? 'HapnX.' : 'Campus Board.', MARKET_MODE ? 'Buy and sell items within your campus community. Check details and connect with the seller before making a deal.' : 'Everything happening around your campus, in one place.', true) + (S.publicMode ? '<div class="ack" style="margin:14px 0">Public preview · Choose your college to browse its posts. Sign in with your official college email to connect, save or publish.</div>' : '') + (MARKET_MODE ? '<div class="ack" style="margin:14px 0">Marketplace listings are student posts. Prices and item details are shared by sellers; verify an item before payment.</div>' : Chips()) +
+      FeedBlock(list, MARKET_MODE ? 'No listings yet' : 'Nothing here yet', S.q || S.type !== 'All' ? 'No posts match your search or filter.' : (MARKET_MODE ? 'Be the first to list an item for your campus.' : 'Be the first to post something for your campus.'), true);
   },
   explore() {
     const counts = {}; (S.posts || []).filter(isLive).forEach(p => { const k = p.type || 'Other'; counts[k] = (counts[k] || 0) + 1; });
@@ -543,14 +544,14 @@ function toast(msg) { const el = $('#toast'); el.innerHTML = `<div class="toast"
 
 let draft = { image: '' };
 function PostModal(post) {
-  const edit = !!post; draft.image = post?.image || '';
+  const edit = !!post; const selectedType = post?.type || (MARKET_MODE ? 'Buy / Sell' : ''); draft.image = post?.image || '';
   openModal(`
-    <div style="display:flex;justify-content:space-between;align-items:center"><h2>${edit ? 'Edit post.' : 'Create something.'}</h2><button class="icon-btn" data-close="1" aria-label="Close">${ic('x')}</button></div>
+    <div style="display:flex;justify-content:space-between;align-items:center"><h2>${edit ? 'Edit post.' : (MARKET_MODE ? 'List an item.' : 'Create something.')}</h2><button class="icon-btn" data-close="1" aria-label="Close">${ic('x')}</button></div>
     <form id="postForm" data-id="${post?.id || ''}">
       <div class="field"><textarea name="text" maxlength="600" placeholder="What's on your mind?" required>${esc(post?.text || '')}</textarea></div>
       <div class="field"><label>Post type (optional)</label>
-        <div class="types">${['', ...ALL_TYPES].map(t => `<label class="chip ${((post?.type || '') === t) ? 'on' : ''}" data-typepick="${esc(t)}" style="cursor:pointer">${t ? esc(t) : 'None'}</label>`).join('')}</div>
-        <input type="hidden" name="type" value="${esc(post?.type || '')}"></div>
+        <div class="types">${['', ...(MARKET_MODE ? ['Buy / Sell'] : ALL_TYPES)].map(t => `<label class="chip ${selectedType === t ? 'on' : ''}" data-typepick="${esc(t)}" style="cursor:pointer">${t ? esc(t) : 'None'}</label>`).join('')}</div>
+        <input type="hidden" name="type" value="${esc(selectedType)}"></div>
       <div class="field" id="customWrap" ${post?.type === 'Other' ? '' : 'hidden'}><label>Custom post type</label>
         <input class="input" name="customType" maxlength="40" placeholder="Enter your custom post type..." value="${esc(post?.customType || '')}" ${post?.type === 'Other' ? 'required' : ''}>
         <div class="note">For example: Photography Partner, Project Collaboration, Notes Exchange.</div></div>
@@ -651,6 +652,7 @@ function render(keepFocus) {
   if (had) { const n = $('#q'); n.focus(); n.setSelectionRange(pos, pos); }
 }
 async function load() {
+  S.type = MARKET_MODE ? 'Buy / Sell' : S.type;
   S.loading = true;
   try { await (window.HapnCollegeSelection?.ready || Promise.resolve()); } catch (_) {}
   S.selectedCollegeId = window.HapnCollegeSelection?.get?.() || '';
@@ -672,7 +674,7 @@ async function load() {
   if(target&&/^[0-9a-f-]{36}$/i.test(target)) setTimeout(()=>{const el=document.getElementById('campus-post-'+target);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.style.outline='2px solid #c8f26b';}},120);
 }
 async function refreshPosts() { try { S.posts = await api.listPosts(); S.error = ''; } catch (e) { S.error = e.message; } render(); }
-function go(v) { if(S.publicMode && ['mine','saved','notifs','settings'].includes(v)) return requireCampusLogin(); S.view = v; S.type = 'All'; S.q = ''; if (v === 'notifs') { setTimeout(() => { api.markAllRead(); renderChrome(); }, 800); } render(); window.scrollTo(0, 0); }
+function go(v) { if(S.publicMode && ['mine','saved','notifs','settings'].includes(v)) return requireCampusLogin(); S.view = v; S.type = MARKET_MODE ? 'Buy / Sell' : 'All'; S.q = ''; if (v === 'notifs') { setTimeout(() => { api.markAllRead(); renderChrome(); }, 800); } render(); window.scrollTo(0, 0); }
 
 /* Real connection requests are handled by their post owners. */
 
