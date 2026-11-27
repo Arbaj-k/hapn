@@ -78,32 +78,64 @@
   <style id="hapn-floating-chat-style">
 .hapn-floating-chat{position:fixed!important;right:22px!important;bottom:22px!important;z-index:2147483647!important;display:flex!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;align-items:center!important;gap:10px;padding:14px 18px!important;border:2px solid #fff!important;border-radius:999px!important;background:#2f45ff!important;color:#fff!important;font:700 15px/1.1 system-ui,-apple-system,Segoe UI,sans-serif!important;text-decoration:none!important;box-shadow:0 8px 26px rgba(25,38,150,.35)!important}.hapn-floating-chat svg{display:block!important;width:22px!important;height:22px!important;flex:0 0 auto!important}.hapn-floating-chat .chat-label{display:inline!important;color:#fff!important}@media(max-width:600px){.hapn-floating-chat{right:14px!important;bottom:14px!important;padding:14px!important;border-radius:50%!important;width:56px!important;height:56px!important;justify-content:center!important}.hapn-floating-chat .chat-label{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important}}
 </style>
+<style id="hapn-app-header-styles">
+.hapn-app-header{background:#293bd5!important;color:#fff!important;border-bottom:0!important;position:relative!important;z-index:60}
+.hapn-top-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:12px 4% 0;border-bottom:1px solid rgba(255,255,255,.24)}
+.hapn-tab{height:64px;border-radius:28px 28px 0 0;background:#3b50df;color:#fff;display:flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;font-size:clamp(15px,2.3vw,22px);font-weight:800;white-space:nowrap}
+.hapn-tab.is-active{background:#c8ff62;color:#10151d}
+.hapn-tab svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.hapn-search-row{display:grid;grid-template-columns:76px minmax(0,1fr) 52px;align-items:center;gap:14px;padding:14px 4%}
+.hapn-calendar-button{height:76px;width:76px;border-radius:23px;background:#101b35;display:grid;place-items:center}
+.hapn-calendar-button svg{width:48px;height:48px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;background:#304cff;border-radius:14px;padding:8px}
+.hapn-search-box{height:76px;background:#fff;border-radius:44px;display:flex;align-items:center;gap:14px;padding:0 24px;color:#58656a;min-width:0}
+.hapn-search-box svg{width:28px;height:28px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+.hapn-search-box input{border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;color:#26313a!important;font-size:clamp(15px,2.2vw,21px)!important;width:100%;min-width:0;padding:0!important}
+.hapn-search-box input::placeholder{color:#788087;opacity:1}
+.hapn-menu-button{height:52px;width:52px;padding:8px!important;border:0!important;background:transparent!important;box-shadow:none!important;display:flex!important;flex-direction:column;justify-content:center;align-items:center;gap:6px}
+.hapn-menu-button span{display:block;width:38px;height:5px;background:#fff;border-radius:8px}
+.hapn-menu-panel{display:none!important;background:#293bd5!important;padding:8px 4% 18px!important}
+.hapn-menu-panel.open{display:flex!important;flex-direction:column;gap:8px}
+.hapn-menu-panel a{display:flex!important;color:#fff!important;background:rgba(255,255,255,.1);border-radius:12px;padding:12px 16px;text-decoration:none;font-weight:700}
+.hapn-college-row{background:#293bd5!important;color:#fff!important;border:0!important;padding:0 4% 22px!important;margin:0!important}
+.hapn-college-row .container{display:none!important}
+.hapn-college-select{display:flex;align-items:center;gap:12px;min-width:0}
+.hapn-college-select>svg{width:31px;height:31px;stroke:#fff;fill:none;stroke-width:2;flex:0 0 auto}
+.hapn-college-select select{appearance:none;border:0!important;background:transparent!important;color:#fff!important;font-size:19px!important;font-weight:800!important;padding:4px 20px 4px 0!important;max-width:52vw;box-shadow:none!important}
+.hapn-college-select select option{color:#17203a;background:#fff}
+.hapn-chevron{width:10px;height:10px;border-right:2px solid rgba(255,255,255,.8);border-bottom:2px solid rgba(255,255,255,.8);transform:rotate(45deg);margin-left:-18px;margin-top:-5px;pointer-events:none}
+.hapn-device-status{margin-left:auto;color:#d8ddff;font-size:clamp(12px,1.8vw,17px);white-space:nowrap}
+@media(min-width:768px){.hapn-app-header,.hapn-college-row{padding-left:max(4%,calc((100% - 1120px)/2))!important;padding-right:max(4%,calc((100% - 1120px)/2))!important}.hapn-top-tabs{padding-left:0;padding-right:0}.hapn-tab{border-radius:24px 24px 0 0}.hapn-search-row{padding-left:0;padding-right:0}}
+@media(max-width:767px){.hapn-app-header{margin:0!important;border-radius:0 0 30px 30px!important;overflow:visible}.hapn-top-tabs{gap:10px;padding:12px 4% 0}.hapn-tab{height:72px;border-radius:30px 30px 0 0;gap:8px;font-size:clamp(14px,4vw,20px)}.hapn-tab svg{width:25px;height:25px}.hapn-search-row{grid-template-columns:68px minmax(0,1fr) 42px;gap:10px;padding:14px 4%}.hapn-calendar-button{width:68px;height:76px;border-radius:22px}.hapn-calendar-button svg{width:48px;height:48px}.hapn-search-box{height:76px;padding:0 17px;gap:10px}.hapn-search-box input{font-size:16px!important}.hapn-menu-button{width:42px;height:48px}.hapn-menu-button span{width:34px;height:5px}.hapn-college-row{display:flex!important;align-items:center;min-height:62px;padding:0 5% 18px!important}.hapn-college-select select{font-size:18px!important}.hapn-device-status{font-size:13px}.site-header .nav a.mobile-primary-link{display:flex!important}}
+@media(max-width:380px){.hapn-top-tabs{gap:7px}.hapn-tab{font-size:14px}.hapn-search-row{grid-template-columns:58px minmax(0,1fr) 36px;gap:8px}.hapn-calendar-button{width:58px;height:68px}.hapn-search-box{height:68px;padding:0 12px}.hapn-search-box input{font-size:14px!important}.hapn-menu-button{width:36px}.hapn-menu-button span{width:30px}}
+</style>
 </head>
 <body data-root="" data-page="home">
   <div class="diwali-bg"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="/">
-        <img src="assets/images/logo.svg" alt="" width="34" height="34">
-        <span>Hapn</span>
-      </a>
-      <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">☰</button>
-      <nav class="nav" id="site-nav" aria-label="Main">
-        <a href="/events/" aria-current="page">Explore</a>
-        <a href="/chat/" aria-label="Anonymous Chat">Anonchat</a>
-        <a href="/hapnx/">HapnX</a>
-        <a class="mobile-primary-link" href="/">Home</a>
-        <a class="mobile-primary-link" href="/chat/" aria-label="Anonymous Chat">Anonchat</a>
-        <a class="mobile-primary-link" href="/hapnx/">HapnX</a>
-        <a class="mobile-primary-link" href="/hapn-connect/">Hapn Connect</a>
-        <a class="mobile-primary-link" href="/submit-event/">Share an Event</a>
-        <a class="mobile-primary-link" href="/send-message/">Send Message</a>
-      </nav>
+  <header class="site-header hapn-app-header">
+    <div class="hapn-top-tabs" role="navigation" aria-label="Main destinations">
+      <a class="hapn-tab is-active" href="/events/" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="m14.8 9.2-2 5.6-5.6 2 2-5.6z"/></svg><span>Explore</span></a>
+      <a class="hapn-tab" href="/chat/" aria-label="Anonchat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.5a8 8 0 0 1-8.3 7.5 9 9 0 0 1-4-.9L3 20l1.5-4.2A7.2 7.2 0 0 1 3.5 11.5 8 8 0 0 1 12 4a8 8 0 0 1 8.5 7.5Z"/></svg><span>Anonchat</span></a>
+      <a class="hapn-tab" href="/hapnx/" aria-label="HapnX"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 13H6L5 8Z"/><path d="M9 8V5a3 3 0 0 1 6 0v3"/></svg><span>HapnX</span></a>
     </div>
+    <div class="hapn-search-row">
+      <a class="hapn-calendar-button" href="/events/" aria-label="Browse event calendar"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4M17 3v4M3 10h18"/><path d="M8 14h3v3H8z"/></svg></a>
+      <label class="hapn-search-box" for="hapn-header-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7"/><path d="m16 16 5 5"/></svg><input id="hapn-header-search" type="search" placeholder="Search events, internships..." autocomplete="off" aria-label="Search events and internships"></label>
+      <button class="nav-toggle hapn-menu-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span></button>
+    </div>
+    <nav class="nav hapn-menu-panel" id="site-nav" aria-label="More">
+      <a href="/" class="mobile-primary-link">Home</a>
+      <a href="/fests/" class="mobile-primary-link">College Fests</a>
+      <a href="/hapn-connect/" class="mobile-primary-link">Hapn Connect</a>
+      <a href="/submit-event/" class="mobile-primary-link">Share an Event</a>
+      <a href="/send-message/" class="mobile-primary-link">Send Message</a>
+    </nav>
   </header>
-<section class="college-preference-bar" aria-label="Your college preference"><div class="container"><div class="college-preference-copy"><strong>Your college</strong><span id="college-preference-status">Choose once — Hapn will remember it on this device.</span></div><label class="visually-hidden" for="college-filter">Choose your college</label><select id="college-filter" data-college-selector aria-label="Choose your college"><option value="">Loading colleges…</option></select></div></section>
+  <section class="college-preference-bar hapn-college-row" aria-label="Your college preference">
+    <div class="hapn-college-select"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9 12 3l10 6-10 6L2 9Z"/><path d="M6 12v5c4 3 8 3 12 0v-5M22 9v6"/></svg><label class="visually-hidden" for="college-filter">Choose your college</label><select id="college-filter" data-college-selector aria-label="Choose your college"><option value="">Loading colleges…</option></select><span class="hapn-chevron" aria-hidden="true"></span></div>
+    <span class="hapn-device-status" id="college-preference-status">Saved on this device</span>
+  </section>
 
   <main id="main">
     <section class="hero">
@@ -211,6 +243,17 @@
   <script defer src="js/events.js?v=20261116sharencare2"></script>
   <script defer src="js/fest-carousel.js?v=20261114sharedcollege1"></script>
   <script defer src="/js/pwa.js?v=20261031pwa1"></script>
+<script>
+(function(){
+ const top=document.getElementById('hapn-header-search');
+ if(!top)return;
+ const main=document.getElementById('search-input');
+ top.addEventListener('input',function(){if(main){main.value=top.value;main.dispatchEvent(new Event('input',{bubbles:true}));}});
+ top.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();document.getElementById('events')?.scrollIntoView({behavior:'smooth'});}});
+ const mainSearch=document.getElementById('search-input');
+ if(mainSearch){mainSearch.addEventListener('input',function(){if(top.value!==mainSearch.value)top.value=mainSearch.value;});}
+})();
+</script>
 
 <a class="hapn-floating-chat" href="/chat/" aria-label="Open Hapn Anonchat" title="Open Anonchat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg><span class="chat-label">Anonchat</span></a>
 </body>
