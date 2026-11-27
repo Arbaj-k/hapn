@@ -40,7 +40,7 @@ async function start(){
    if(!data||!data.sent){notice(data&&data.message||'No eligible recipients were found.','warn');return;}
     const count=Number.isFinite(data.recipients)?data.recipients+' college members':'all subscribed users';
    notice('Notification submitted to OneSignal for '+count+'.','success');
-   form.reset();audience.dispatchEvent(new Event('change'));
+   form.reset();if(assignedCollege){audience.value='college';college.value=assignedCollege;}audience.dispatchEvent(new Event('change'));
   }catch(error){console.warn('[admin-notifications] broadcast failed:',error.status||error.code||'unknown');notice('Could not send the notification. Check your admin access and try again.','error');}
   finally{button.disabled=false;button.textContent='Send notification';}
  });
