@@ -83,18 +83,32 @@ body{background:radial-gradient(ellipse at 50% -15%,#343a46 0,transparent 45%),#
 </style>
 </head>
 <body>
-<header class="header"><div class="container header-inner">
-<a class="brand" href="/" aria-label="Hapn home"><img src="/assets/images/logo.svg" alt=""><span>Hapn</span></a>
-<nav class="nav" aria-label="Preview navigation"><a href="/">Home</a><a href="/events/">Events</a><a href="/fests/">Fests</a><a class="current" href="#" aria-current="page">Chat</a>
-        <a href="/send-message/">Send Message</a>
-        <a class="mobile-primary-link" href="/">Home</a>
-        <a class="mobile-primary-link" href="/chat/" aria-label="Anonymous Chat">Chat</a>
-        <a class="mobile-primary-link" href="/hapn-connect/">Hapn Connect</a>
-        <a class="mobile-primary-link" href="/submit-event/">Share an Event</a>
-        <a class="mobile-primary-link" href="/send-message/">Send Message</a>
-      </nav>
-<span class="preview-tag">HAPN CHAT · BETA</span>
-</div></header>
+<div class="hapn-global-bar" role="navigation" aria-label="Hapn sections">
+  <a class="hapn-global-brand" href="/" aria-label="Hapn home"><img src="/assets/images/logo.svg" alt=""><span>Hapn</span></a>
+  <nav class="hapn-global-tabs" aria-label="Explore Hapn">
+    <a data-hapn-tab="explore" href="/events/">Explore</a>
+    <a data-hapn-tab="anonchat" href="/chat/">Anonchat</a>
+    <a data-hapn-tab="hapnx" href="/hapnx/">HapnX</a>
+  </nav>
+</div>
+<style>
+.hapn-global-bar{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:clamp(16px,4vw,48px);min-height:66px;padding:8px max(16px,calc((100vw - 1180px)/2));background:rgba(255,255,255,.97);border-bottom:1px solid #e5ece5;box-shadow:0 4px 18px rgba(20,48,32,.06);backdrop-filter:blur(14px)}
+.hapn-global-brand{display:inline-flex;align-items:center;gap:8px;color:#17372d;text-decoration:none;font-size:1.2rem;font-weight:850;white-space:nowrap}
+.hapn-global-brand img{width:34px;height:34px;object-fit:contain}
+.hapn-global-tabs{display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
+.hapn-global-tabs a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px clamp(12px,2vw,20px);border-radius:999px;color:#29483b;text-decoration:none;font-size:.94rem;font-weight:750;white-space:nowrap;transition:background .15s,color .15s}
+.hapn-global-tabs a:hover{background:#edf5ed}
+.hapn-global-tabs a[aria-current="page"]{background:#c8f36a;color:#14251a}
+@media(max-width:520px){.hapn-global-bar{min-height:60px;padding:7px 10px;gap:10px}.hapn-global-brand{font-size:1rem;gap:5px}.hapn-global-brand img{width:29px;height:29px}.hapn-global-tabs{flex:1;justify-content:flex-end;gap:2px}.hapn-global-tabs a{min-height:38px;padding:7px 9px;font-size:.82rem}}
+@media(max-width:360px){.hapn-global-brand span{display:none}.hapn-global-tabs a{padding-inline:8px;font-size:.79rem}}
+</style>
+<script>
+(function(){
+ const p=location.pathname, q=new URLSearchParams(location.search);
+ const active=p.startsWith('/chat/')?'anonchat':(p.startsWith('/connect/board/')&&q.get('marketplace')==='1'?'hapnx':'explore');
+ document.querySelectorAll('.hapn-global-tabs a').forEach(a=>{if(a.dataset.hapnTab===active)a.setAttribute('aria-current','page')});
+})();
+</script>
 <section class="hero"><div class="container hero-grid"><div><p class="eyebrow">HAPN ANONYMOUS CHAT</p><h1>Talk openly.<br>Connect with care.</h1><p>Chat, ask questions and help fellow students using an anonymous display nickname. This does not guarantee complete anonymity.</p><blockquote class="fight-quote">“It’s only after we’ve lost everything that we’re free to do anything.”<cite>— Fight Club</cite></blockquote></div></div></section>
 <main class="main"><div class="container">
 <div class="section-heading"><div><h2>Choose a room</h2></div></div>
