@@ -322,7 +322,7 @@ function Sidebar() {
   const u = unread(), dark = theme() === 'dark';
   if(S.publicMode) return `
     <div class="brand"><div class="logo" style="padding:0">hapn</div><span class="status"><span class="dot"></span>Public preview</span></div>
-    <div class="eyebrow" style="padding:14px 10px 0;font-size:11px">SHARE N CARE</div>
+    <div class="eyebrow" style="padding:14px 10px 0;font-size:11px">${MARKET_MODE ? 'HAPNX MARKETPLACE' : 'SHARE N CARE'}</div>
     <nav class="nav" aria-label="Main">
       <button class="nav-item active" data-go="home">${ic('home')}<span>Home</span></button>
       <button class="nav-item" data-go="explore">${ic('explore')}<span>Explore</span></button>
@@ -548,8 +548,8 @@ function PostModal(post) {
   openModal(`
     <div style="display:flex;justify-content:space-between;align-items:center"><h2>${edit ? 'Edit post.' : (MARKET_MODE ? 'List an item.' : 'Create something.')}</h2><button class="icon-btn" data-close="1" aria-label="Close">${ic('x')}</button></div>
     <form id="postForm" data-id="${post?.id || ''}">
-      <div class="field"><textarea name="text" maxlength="600" placeholder="What's on your mind?" required>${esc(post?.text || '')}</textarea></div>
-      <div class="field"><label>Post type (optional)</label>
+      <div class="field"><textarea name="text" maxlength="600" placeholder="${MARKET_MODE ? 'Item name, price, condition and details…' : 'What\'s on your mind?'}" required>${esc(post?.text || '')}</textarea></div>
+      <div class="field"><label>${MARKET_MODE ? 'Listing type' : 'Post type (optional)'}</label>
         <div class="types">${['', ...(MARKET_MODE ? ['Buy / Sell'] : ALL_TYPES)].map(t => `<label class="chip ${selectedType === t ? 'on' : ''}" data-typepick="${esc(t)}" style="cursor:pointer">${t ? esc(t) : 'None'}</label>`).join('')}</div>
         <input type="hidden" name="type" value="${esc(selectedType)}"></div>
       <div class="field" id="customWrap" ${post?.type === 'Other' ? '' : 'hidden'}><label>Custom post type</label>
