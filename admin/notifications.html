@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://analytics.google.com; form-action 'self' https:; frame-ancestors 'none'">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><meta name="referrer" content="strict-origin-when-cross-origin">
+  <link rel="icon" href="../assets/images/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../css/style.css"><link rel="stylesheet" href="../css/admin.css">
+  <title>Notifications – Hapn Admin</title>
+</head>
+<body class="admin-body" data-root="../" data-page="notifications">
+  <header class="admin-header"><div class="container admin-header-inner">
+    <a class="brand" href="dashboard.html"><img src="../assets/images/logo.svg" alt="" width="34" height="34"><span>Hapn</span> <span class="admin-tag">Admin</span></a>
+    <div class="admin-actions"><span class="admin-email" id="admin-email"></span><a class="btn btn-sm btn-ghost-light" href="../">View site</a><button type="button" class="btn btn-sm btn-ghost-light" id="logout-btn">Log out</button></div>
+  </div></header>
+  <div class="gate" id="gate"><p>Checking permissions…</p></div>
+  <main class="container admin-main narrow" id="admin-content" hidden>
+    <a class="back-link" href="dashboard.html">Back to dashboard</a>
+    <div class="page-title-row"><div><h1>Push notifications</h1><p class="hint">Send a Hapn announcement to opted-in users.</p></div></div>
+    <div id="notice" role="status" aria-live="polite" hidden></div>
+    <form id="broadcast-form" class="card">
+      <div class="field"><label for="broadcast-title">Notification title</label><input id="broadcast-title" type="text" maxlength="80" required placeholder="e.g. New college fest announced"></div>
+      <div class="field"><label for="broadcast-message">Message</label><textarea id="broadcast-message" maxlength="180" required placeholder="Write a short, useful announcement…" rows="4"></textarea><span class="hint">Keep it clear and relevant. Maximum 180 characters.</span></div>
+      <div class="field"><label for="broadcast-audience">Audience</label><select id="broadcast-audience" required><option value="all">All Hapn push subscribers</option><option value="college">One college's verified Connect members</option></select></div>
+      <div class="field" id="college-field" hidden><label for="broadcast-college">College</label><select id="broadcast-college"><option value="">Choose a college</option></select></div>
+      <div class="field"><label for="broadcast-url">Open this Hapn page</label><input id="broadcast-url" type="text" maxlength="300" value="/" required placeholder="/events/"><span class="hint">Use a Hapn path such as /events/, /fests/, /connect/ or /hapnx/.</span></div>
+      <div class="form-actions"><button class="btn btn-primary" id="send-broadcast" type="submit">Send notification</button><span class="hint">Only users who enabled push notifications can receive a browser push.</span></div>
+    </form>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../js/config.js"></script><script src="../js/supabase.js?v=20261022sessionfix2"></script>
+  <script src="../js/common.js"></script><script src="../js/auth.js"></script><script src="notifications.js"></script>
+</body></html>
