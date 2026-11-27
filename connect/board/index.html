@@ -671,12 +671,12 @@ async function load() {
   S.selectedCollegeName = window.HapnCollegeSelection?.getName?.() || ''; S.error = ''; S.member = null; S.me = null; S.publicMode = false; DB = window.sb; render();
   try {
     S.me = await api.me();
-    if(!S.me){S.publicMode=true;DB=window.sbPublic;S.selectedCollegeId=window.HapnCollegeSelection?.get?.()||'';S.selectedCollegeName=window.HapnCollegeSelection?.getName?.()||'';}
+    if(!S.me){S.publicMode=true;DB=window.sbPublic||window.sb;S.selectedCollegeId=window.HapnCollegeSelection?.get?.()||'';S.selectedCollegeName=window.HapnCollegeSelection?.getName?.()||'';}
     else {try { await DB.rpc('mark_sharencare_opened'); } catch (e) { console.warn('Could not record Share N Care open state:',e); }}
     S.posts = await api.listPosts();
   }
   catch (e) {
-    if(!S.member && window.sbPublic){S.me=null;S.publicMode=true;DB=window.sbPublic;try{S.posts=await api.listPosts();S.error='';}catch(publicError){S.error=publicError.message||'Could not load public posts.';}}
+    if(!S.member && (window.sbPublic||window.sb)){S.me=null;S.member=null;S.publicMode=true;DB=window.sbPublic||window.sb;try{S.posts=await api.listPosts();S.error='';}catch(publicError){S.error=publicError.message||'Could not load public posts.';}}
     else S.error = e.message || 'Could not load posts.';
   }
   S.loading = false; render();
