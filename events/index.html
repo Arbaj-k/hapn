@@ -78,16 +78,36 @@
 <section class="college-preference-bar" aria-label="Your college preference"><div class="container"><div class="college-preference-copy"><strong>Your college</strong><span id="college-preference-status">Choose once — Hapn will remember it on this device.</span></div><label class="visually-hidden" for="college-filter">Choose your college</label><select id="college-filter" data-college-selector aria-label="Choose your college"><option value="">Loading colleges…</option></select></div></section>
 
   <main id="main">
-    <div class="page-head">
-      <div class="container">
-        <h1>College &amp; University Events</h1>
-        <p>Find something to join on your campus. Search published events by name, venue or category, then follow the organiser's registration details.</p>
+    <style>
+      body[data-page="events"] .events-hero{padding:clamp(42px,7vw,76px) 0 30px;background:radial-gradient(ellipse at 82% 0%,rgba(200,243,106,.22),transparent 42%),linear-gradient(180deg,#f7faf5 0%,#fff 100%);border-bottom:1px solid #edf1e9}
+      body[data-page="events"] .events-hero-inner{max-width:1180px;margin:0 auto;padding:0 20px}
+      body[data-page="events"] .events-eyebrow{display:inline-flex;align-items:center;gap:8px;margin:0 0 14px;color:#42634e;font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+      body[data-page="events"] .events-eyebrow:before{content:"";width:22px;height:2px;border-radius:2px;background:#9bcf42}
+      body[data-page="events"] .events-hero h1{max-width:760px;margin:0;color:#14251c;font-size:clamp(2.1rem,5vw,3.65rem);line-height:1.04;letter-spacing:-.055em;font-weight:850}
+      body[data-page="events"] .events-hero p{max-width:650px;margin:16px 0 0;color:#607066;font-size:clamp(.98rem,1.6vw,1.1rem);line-height:1.7}
+      body[data-page="events"] .events-content{padding-top:30px}
+      body[data-page="events"] .events-topline{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
+      body[data-page="events"] .events-topline .results-count{margin:0;color:#526257;font-size:.9rem;font-weight:700}
+      body[data-page="events"] .events-discovery-label{color:#87938a;font-size:.78rem;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
+      body[data-page="events"] .toolbar{gap:16px}
+      body[data-page="events"] .search{min-height:54px;border:1px solid #e1e9df;border-radius:15px;background:#fff;box-shadow:0 5px 20px rgba(27,54,35,.045)}
+      body[data-page="events"] #search-input{font-size:.96rem}
+      body[data-page="events"] .events-grid{margin-top:24px}
+      @media(max-width:600px){body[data-page="events"] .events-hero{padding:38px 0 25px}body[data-page="events"] .events-hero-inner{padding:0 16px}body[data-page="events"] .events-content{padding-top:22px}body[data-page="events"] .events-topline{align-items:flex-start;flex-direction:column;gap:6px}}
+    </style>
+    <section class="events-hero">
+      <div class="events-hero-inner">
+        <div class="events-eyebrow">Discover what’s happening</div>
+        <h1>Find your next campus experience.</h1>
+        <p>Explore workshops, fests, hackathons and campus activities from colleges and universities. Find an event, check the details and connect with its organisers.</p>
       </div>
-    </div>
-    <section class="section">
+    </section>
+    <section class="section events-content">
       <div class="container">
-        <p class="results-count" id="results-count" aria-live="polite"></p>
-        <p class="directory-entry"><a href="/jaipur-college-events/">Explore college events in Jaipur</a> · <a href="/events/directory/">Browse the complete published college events directory →</a> · <a href="/university-events/">How university event discovery works on Hapn</a> · <a href="/international-university-events/">International university events guide</a></p>
+        <div class="events-topline">
+          <p class="results-count" id="results-count" aria-live="polite"></p>
+          <span class="events-discovery-label">Explore events</span>
+        </div>
         <div class="toolbar">
           <div class="search">
             <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
