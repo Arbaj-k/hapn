@@ -18,6 +18,13 @@
 
   const byDateTime = (a, b) => (a.date + ' ' + (a.time || '')).localeCompare(b.date + ' ' + (b.time || ''));
 
+  // College IDs can arrive as UUID strings with casing/whitespace differences.
+  function sameCollege(a, b) {
+    const left = String(a == null ? '' : a).trim().toLowerCase();
+    const right = String(b == null ? '' : b).trim().toLowerCase();
+    return !!left && !!right && left === right;
+  }
+
   // Use one permanent dynamic route so newly published events work immediately,
   // without waiting for GitHub Pages to generate a title-based folder at build time.
   function eventPath(ev) {
@@ -82,7 +89,7 @@
         const eventEnd = String(ev.end_date || ev.date || '');
         if (state.selectedDate < eventStart || state.selectedDate > eventEnd) return false;
       }
-      if (ev.visibility_scope !== 'all' && (!state.college || ev.college_id !== state.college)) return false;
+      if (ev.visibility_scope !== 'all' && (!state.college || !sameCollege(ev.college_id, state.college))) return false;
       if (state.category !== 'All' && !String(ev.category || '').split(',').map((c) => c.trim()).includes(state.category)) return false;
       if (!q) return true;
       return [ev.title, ev.venue, ev.category].some((field) => String(field || '').toLowerCase().indexOf(q) !== -1);
@@ -232,7 +239,7 @@
     const box = document.getElementById('next-up');
     if (!box) return;
     if (shareCareAutoTimer) { clearInterval(shareCareAutoTimer); shareCareAutoTimer = null; }
-    const upcoming = sortForDisplay(state.events).filter((e) => CE.eventStatus(e) === 'upcoming' && (e.visibility_scope === 'all' || (state.college && e.college_id === state.college)));
+    const upcoming = sortForDisplay(state.events).filter((e) => CE.eventStatus(e) === 'upcoming' && (e.visibility_scope === 'all' || (state.college && sameCollege(e.college_id, state.college))));
     const picks = upcoming.slice().sort((a, b) => Number(Boolean(b.is_featured)) - Number(Boolean(a.is_featured)) || Number(Boolean(b.is_pinned)) - Number(Boolean(a.is_pinned)) || byDateTime(a, b));
     let preview = null, previewError = false, loading = false;
     const accountState = await (async()=>{try{const authDb=window.sb||window.sbPublic;const {data:{session}}=await authDb.auth.getSession();if(!session?.user)return {opened:false,collegeId:''};const {data,error}=await authDb.from('campus_members').select('college_id,sharencare_opened_at').eq('user_id',session.user.id).maybeSingle();return {opened:!error&&!!data?.sharencare_opened_at,collegeId:!error&&data?.college_id||''};}catch(_){return {opened:false,collegeId:''};}})();
@@ -429,7 +436,7 @@
 
     await (window.HapnCollegeSelection?.ready || Promise.resolve());
     const selectedCollege = window.HapnCollegeSelection?.get?.() || '';
-    if (data.visibility_scope !== 'all' && (!selectedCollege || data.college_id !== selectedCollege)) {
+    if (data.visibility_scope !== 'all' && (!selectedCollege || !sameCollege(data.college_id, selectedCollege))) {
       return notFound('This event is only available to students from its college. Choose the matching college to view it.');
     }
 
