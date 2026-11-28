@@ -2587,3 +2587,33 @@ body[data-page="home"] .home-calendar {
     margin:4px 0 7px!important;
   }
 }
+
+
+/* Bigger, cleaner homepage event poster stack. */
+#next-up .featured-card{
+  width:min(100%,320px);
+  max-width:320px;
+}
+@media(max-width:899px){
+  #next-up .featured-carousel{
+    padding:10px 5% 14px!important;
+    gap:0!important;
+  }
+  #next-up .featured-card{
+    width:min(90vw,320px)!important;
+    max-width:320px!important;
+  }
+  #next-up .featured-poster-wrap,
+  #next-up .featured-poster{
+    border-radius:18px!important;
+  }
+  #next-up .featured-actions{
+    margin-top:9px!important;
+  }
+}
+@media(min-width:900px){
+  #next-up .featured-card{
+    width:300px!important;
+    max-width:300px!important;
+  }
+}
