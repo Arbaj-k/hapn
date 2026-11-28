@@ -2557,3 +2557,33 @@ body[data-page="home"] .home-calendar {
   body[data-page="home"] .hero-intro h1{font-size:2.25rem!important}
   body[data-page="home"] .calendar-day{min-height:56px!important}
 }
+
+
+/* Tighten College Fests spacing on the mobile homepage. */
+@media(max-width:767px){
+  body[data-page="home"] .fest-carousel-section.section{
+    padding:10px 0 12px!important;
+  }
+  body[data-page="home"] .fest-carousel-section .section-head{
+    margin:0 0 5px!important;
+    gap:6px!important;
+  }
+  body[data-page="home"] .fest-carousel-section .section-head h2{
+    margin:0!important;
+    line-height:1.05!important;
+  }
+  body[data-page="home"] .fest-carousel-track{
+    gap:10px!important;
+    padding:3px 0 7px!important;
+  }
+  body[data-page="home"] .fest-carousel-track .fest-card-body{
+    padding:11px!important;
+  }
+  body[data-page="home"] .fest-carousel-track .fest-card-body h2,
+  body[data-page="home"] .fest-carousel-track .fest-card-body h3{
+    margin:2px 0 5px!important;
+  }
+  body[data-page="home"] .fest-carousel-track .fest-date{
+    margin:4px 0 7px!important;
+  }
+}
