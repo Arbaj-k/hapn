@@ -14,7 +14,13 @@ async function start(){
   const {data:currentCollege,error:collegeError}=await window.sb.rpc('current_college_id');
   if(!collegeError&&currentCollege===profile.college_id)assignedCollege=profile.college_id;
  }
- if(!isSuper&&!assignedCollege){$('gate').textContent='Access denied. Admin permission is required.';return;}
+ // Keep the legacy admins-table path in sync with the Edge Function's authorization rules.
+ let isLegacyAdmin=false;
+ if(!profile&&!profileError){
+  const {data:legacyAdmin,error:legacyError}=await window.sb.from('admins').select('user_id').eq('user_id',userData.user.id).eq('role','admin').maybeSingle();
+  if(!legacyError&&legacyAdmin)isLegacyAdmin=true;
+ }
+ if(!isSuper&&!assignedCollege&&!isLegacyAdmin){$('gate').textContent='Access denied. Active admin permission is required.';return;}
  $('gate').hidden=true;$('admin-content').hidden=false;
  $('admin-email').textContent=userData.user.email||'';
  const audience=$('broadcast-audience'),collegeField=$('college-field'),college=$('broadcast-college'),form=$('broadcast-form'),button=$('send-broadcast');
@@ -35,13 +41,22 @@ async function start(){
   if(!window.confirm('Send this notification to '+(audience.value==='all'?'all opted-in Hapn users':'verified members of the selected college')+'?'))return;
   button.disabled=true;button.textContent='Sending…';
   try{
-   const {data,error}=await window.sb.functions.invoke('send-event-push',{body:{action:'broadcast',title,message,audience:audience.value,collegeId:college.value||null,url}});
+   const {data:{session:activeSession}}=await window.sb.auth.getSession();
+   if(!activeSession?.access_token)throw Object.assign(new Error('Your admin session has expired.'),{status:401});
+   const {data,error}=await window.sb.functions.invoke('send-event-push',{body:{action:'broadcast',title,message,audience:audience.value,collegeId:college.value||null,url},headers:{Authorization:'Bearer '+activeSession.access_token}});
    if(error)throw error;
    if(!data||!data.sent){notice(data&&data.message||'No eligible recipients were found.','warn');return;}
     const count=Number.isFinite(data.recipients)?data.recipients+' college members':'all subscribed users';
    notice('Notification submitted to OneSignal for '+count+'.','success');
    form.reset();if(assignedCollege){audience.value='college';college.value=assignedCollege;}audience.dispatchEvent(new Event('change'));
-  }catch(error){console.warn('[admin-notifications] broadcast failed:',error.status||error.code||'unknown');notice('Could not send the notification. Check your admin access and try again.','error');}
+  }catch(error){
+   let serverMessage='';
+   try{if(error&&error.context&&typeof error.context.json==='function'){const payload=await error.context.json();serverMessage=String(payload.error||payload.message||'');}}catch(_){}
+   console.warn('[admin-notifications] broadcast failed:',error.status||error.code||'unknown');
+   if(error.status===401)notice('Your admin session has expired. Log out and sign in again.','error');
+   else if(error.status===403)notice(serverMessage||'Your account does not have permission to send this notification.','error');
+   else notice(serverMessage||'Could not send the notification. Please try again; if it continues, check the Edge Function configuration.','error');
+  }
   finally{button.disabled=false;button.textContent='Send notification';}
  });
 }
