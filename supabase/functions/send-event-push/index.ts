@@ -24,8 +24,8 @@ Deno.serve(async (req: Request) => {
   }
   const json = (body: Record<string, unknown>, status = 200) =>
     new Response(JSON.stringify({ ...body, request_id: requestId }), { status, headers });
-  const fail = (code: string, status = 500) => {
-    console.error("[send-event-push]", requestId, code);
+  const fail = (code: string, status = 500, detail = "") => {
+    console.error("[send-event-push]", requestId, code, detail);
     return json({ error: "The request could not be completed. Please try again.", code: "REQUEST_FAILED" }, status);
   };
   if (req.method === "OPTIONS") return new Response(null, { status: ALLOWED_ORIGINS.has(origin) ? 204 : 403, headers });
@@ -112,11 +112,11 @@ Deno.serve(async (req: Request) => {
         // Also create an in-app notification for members of this college.
         for (let offset = 0; offset < ids.length; offset += 500) {
           const rows = ids.slice(offset, offset + 500).map(user_id => ({
-            user_id, college_id: collegeId, notification_type: "announcement",
+            user_id, college_id: collegeId, notification_type: "info",
             message: title + ": " + message, target_url: targetUrl,
           }));
           const { error } = await adminClient.from("campus_notifications").insert(rows);
-          if (error) return fail("in_app_notification_insert_failed");
+          if (error) return fail("in_app_notification_insert_failed", 500, error.code + ": " + error.message);
         }
       }
 
