@@ -44,37 +44,11 @@
   </script>
   <link rel="icon" href="/assets/images/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/css/style.css?v=20261122mobile4">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What types of college events can I find on Hapn?","acceptedAnswer":{"@type":"Answer","text":"Hapn lists public college activities such as workshops, hackathons, competitions, cultural programmes, sports events and other campus events when organisers have submitted them and they have been published."}},{"@type":"Question","name":"How do I find events for my college?","acceptedAnswer":{"@type":"Answer","text":"Use the college selector near the top of this page to choose your campus. You can then search by event name, venue or category and browse the available listings."}},{"@type":"Question","name":"How do I register for a college event?","acceptedAnswer":{"@type":"Answer","text":"Open an event page and review its date, time, venue, organiser and registration details. If a registration link is available, use it to continue with the organiser's form or website. Check fees, eligibility and availability directly with the organiser."}},{"@type":"Question","name":"Are Hapn event details guaranteed to be current?","acceptedAnswer":{"@type":"Answer","text":"Event information is supplied by organisers and may change. Hapn is a discovery platform, not automatically the event organiser or registration authority. Confirm important details with the organiser before making plans."}},{"@type":"Question","name":"Can I submit my college event to Hapn?","acceptedAnswer":{"@type":"Answer","text":"Yes. Organisers can use the Submit an Event page to send event information for review. Submission does not guarantee publication; provide accurate dates, venue, organiser, poster and registration details."}}]}</script>
 </head>
 <body data-root="" data-page="events">
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <div class="hapn-global-bar" role="navigation" aria-label="Hapn sections">
-  <a class="hapn-global-brand" href="/" aria-label="Hapn home"><img src="/assets/images/logo.svg" alt=""><span>Hapn</span></a>
-  <nav class="hapn-global-tabs" aria-label="Explore Hapn">
-    <a data-hapn-tab="explore" href="/events/">Explore</a>
-    <a data-hapn-tab="anonchat" href="/chat/">Anonchat</a>
-    <a data-hapn-tab="hapnx" href="/hapnx/">HapnX</a>
-  </nav>
-</div>
-<style>
-.hapn-global-bar{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:clamp(16px,4vw,48px);min-height:66px;padding:8px max(16px,calc((100vw - 1180px)/2));background:rgba(255,255,255,.97);border-bottom:1px solid #e5ece5;box-shadow:0 4px 18px rgba(20,48,32,.06);backdrop-filter:blur(14px)}
-.hapn-global-brand{display:inline-flex;align-items:center;gap:8px;color:#17372d;text-decoration:none;font-size:1.2rem;font-weight:850;white-space:nowrap}
-.hapn-global-brand img{width:34px;height:34px;object-fit:contain}
-.hapn-global-tabs{display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
-.hapn-global-tabs a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:9px clamp(12px,2vw,20px);border-radius:999px;color:#29483b;text-decoration:none;font-size:.94rem;font-weight:750;white-space:nowrap;transition:background .15s,color .15s}
-.hapn-global-tabs a:hover{background:#edf5ed}
-.hapn-global-tabs a[aria-current="page"]{background:#c8f36a;color:#14251a}
-@media(max-width:520px){.hapn-global-bar{min-height:60px;padding:7px 10px;gap:10px}.hapn-global-brand{font-size:1rem;gap:5px}.hapn-global-brand img{width:29px;height:29px}.hapn-global-tabs{flex:1;justify-content:flex-end;gap:2px}.hapn-global-tabs a{min-height:38px;padding:7px 9px;font-size:.82rem}}
-@media(max-width:360px){.hapn-global-brand span{display:none}.hapn-global-tabs a{padding-inline:8px;font-size:.79rem}}
-</style>
-<script>
-(function(){
- const p=location.pathname, q=new URLSearchParams(location.search);
- const active=p.startsWith('/chat/')?'anonchat':(p.startsWith('/connect/board/')&&q.get('marketplace')==='1'?'hapnx':'explore');
- document.querySelectorAll('.hapn-global-tabs a').forEach(a=>{if(a.dataset.hapnTab===active)a.setAttribute('aria-current','page')});
-})();
-</script>
+
 <section class="college-preference-bar" aria-label="Your college preference"><div class="container"><div class="college-preference-copy"><strong>Your college</strong><span id="college-preference-status">Choose once — Hapn will remember it on this device.</span></div><label class="visually-hidden" for="college-filter">Choose your college</label><select id="college-filter" data-college-selector aria-label="Choose your college"><option value="">Loading colleges…</option></select></div></section>
 
   <main id="main">
@@ -122,26 +96,6 @@
           <div class="event-card skeleton"></div>
         </div>
         <noscript><p class="notice notice-warn">Please turn on JavaScript to see events.</p></noscript>
-      </div>
-    </section>
-    <section class="section">
-      <div class="container prose">
-        <h2>College and university event discovery — common questions</h2>
-        <div class="events-resource-links" aria-label="More event discovery resources">
-          <p><strong>Explore more event guides</strong></p>
-          <p><a href="/jaipur-college-events/">College events in Jaipur</a> · <a href="/events/directory/">Published events directory</a> · <a href="/university-events/">University event discovery guide</a> · <a href="/international-university-events/">International university events guide</a></p>
-        </div>
-        <h3>What types of college events can I find on Hapn?</h3>
-        <p>Hapn lists public college activities such as workshops, hackathons, competitions, cultural programmes, sports events and other campus events when organisers have submitted them and they have been published.</p>
-        <h3>How do I find events for my college?</h3>
-        <p>Use the college selector near the top of this page to choose your campus. You can then search by event name, venue or category and browse the available listings.</p>
-        <h3>How do I register for a college event?</h3>
-        <p>Open an event page and review its date, time, venue, organiser and registration details. If a registration link is available, use it to continue with the organiser's form or website. Check fees, eligibility and availability directly with the organiser.</p>
-        <h3>Are Hapn event details guaranteed to be current?</h3>
-        <p>Event information is supplied by organisers and may change. Hapn is a discovery platform, not automatically the event organiser or registration authority. Confirm important details with the organiser before making plans.</p>
-        <h3>Can I submit my college event to Hapn?</h3>
-        <p>Yes. Organisers can use the Submit an Event page to send event information for review. Submission does not guarantee publication; provide accurate dates, venue, organiser, poster and registration details.</p>
-        <h3>Can I find university events in every country?</h3><p>Hapn's event availability depends on the colleges and campuses currently active on the platform. Choose a college from the selector to see listings associated with that campus. We do not claim to list every university or event worldwide.</p><p>Want to explore more of campus life? Visit <a href="/fests/">College Fests</a>, read <a href="/hapn-connect/">about Hapn Connect</a>, or see how to <a href="/submit-event/">submit an event</a>.</p>
       </div>
     </section>
   </main>
